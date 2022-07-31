@@ -15,7 +15,7 @@
  *
  */
 
-package com.mobiles.devices.fragment.trending;
+package com.mobiles.devices.fragment.device;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -23,37 +23,49 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 
 import com.mobiles.devices.core.BaseFragment;
-import com.mobiles.devices.databinding.FragmentTrendingBinding;
+import com.mobiles.devices.databinding.FragmentGridItemBinding;
 import com.xuexiang.xpage.annotation.Page;
-import com.xuexiang.xpage.enums.CoreAnim;
-import com.xuexiang.xui.widget.actionbar.TitleBar;
+import com.xuexiang.xrouter.annotation.AutoWired;
+import com.xuexiang.xrouter.launcher.XRouter;
 
 /**
  * @author xuexiang
- * @since 2019-10-30 00:19
+ * @since 2021/6/30 1:21 AM
  */
-@Page(anim = CoreAnim.none)
-public class TrendingFragment extends BaseFragment<FragmentTrendingBinding> {
+@Page
+public class GridItemFragment extends BaseFragment<FragmentGridItemBinding> {
+
+    public static final String KEY_TITLE_NAME = "title_name";
+
+    /**
+     * 自动注入参数，不能是private
+     */
+    @AutoWired(name = KEY_TITLE_NAME)
+    String title;
 
     @NonNull
     @Override
-    protected FragmentTrendingBinding viewBindingInflate(LayoutInflater inflater, ViewGroup container) {
-        return FragmentTrendingBinding.inflate(inflater, container, false);
+    protected FragmentGridItemBinding viewBindingInflate(LayoutInflater inflater, ViewGroup container) {
+        return FragmentGridItemBinding.inflate(inflater, container, false);
     }
 
-    /**
-     * @return 返回为 null意为不需要导航栏
-     */
     @Override
-    protected TitleBar initTitle() {
-        return null;
+    protected void initArgs() {
+        // 自动注入参数必须在initArgs里进行注入
+        XRouter.getInstance().inject(this);
     }
 
-    /**
-     * 初始化控件
-     */
+    @Override
+    protected String getPageTitle() {
+        return title;
+    }
+
+
+
     @Override
     protected void initViews() {
 
     }
+
+
 }

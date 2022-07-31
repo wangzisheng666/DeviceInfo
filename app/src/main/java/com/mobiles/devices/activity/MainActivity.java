@@ -35,10 +35,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.mobiles.devices.R;
 import com.mobiles.devices.core.BaseFragment;
 import com.mobiles.devices.databinding.ActivityMainBinding;
+import com.mobiles.devices.fragment.device.DeviceInfoFragment;
+import com.mobiles.devices.fragment.environmental.EnvironmentalTestingFragment;
 import com.mobiles.devices.fragment.profile.ProfileFragment;
-import com.mobiles.devices.fragment.trending.TrendingFragment;
 import com.mobiles.devices.core.BaseActivity;
-import com.mobiles.devices.fragment.news.NewsFragment;
 import com.mobiles.devices.fragment.other.AboutFragment;
 import com.mobiles.devices.fragment.other.SettingsFragment;
 import com.mobiles.devices.utils.Utils;
@@ -96,12 +96,11 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements V
         binding.includeMain.toolbar.inflateMenu(R.menu.menu_main);
         binding.includeMain.toolbar.setOnMenuItemClickListener(this);
 
-        initHeader();
 
         //主页内容填充
         BaseFragment[] fragments = new BaseFragment[]{
-                new NewsFragment(),
-                new TrendingFragment(),
+                new DeviceInfoFragment(),
+                new EnvironmentalTestingFragment(),
                 new ProfileFragment()
         };
         FragmentAdapter<BaseFragment> adapter = new FragmentAdapter<>(getSupportFragmentManager(), fragments);
@@ -114,57 +113,13 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements V
         XUpdateInit.checkUpdate(this, false);
     }
 
-    private void initHeader() {
-        binding.navView.setItemIconTintList(null);
-        View headerView = binding.navView.getHeaderView(0);
-        LinearLayout navHeader = headerView.findViewById(R.id.nav_header);
-        RadiusImageView ivAvatar = headerView.findViewById(R.id.iv_avatar);
-        TextView tvAvatar = headerView.findViewById(R.id.tv_avatar);
-        TextView tvSign = headerView.findViewById(R.id.tv_sign);
 
-        if (Utils.isColorDark(ThemeUtils.resolveColor(this, R.attr.colorAccent))) {
-            tvAvatar.setTextColor(Colors.WHITE);
-            tvSign.setTextColor(Colors.WHITE);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                ivAvatar.setImageTintList(ResUtils.getColors(R.color.xui_config_color_white));
-            }
-        } else {
-            tvAvatar.setTextColor(ThemeUtils.resolveColor(this, R.attr.xui_config_color_title_text));
-            tvSign.setTextColor(ThemeUtils.resolveColor(this, R.attr.xui_config_color_explain_text));
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                ivAvatar.setImageTintList(ResUtils.getColors(R.color.xui_config_color_gray_3));
-            }
-        }
-
-        // TODO: 2019-10-09 初始化数据
-        ivAvatar.setImageResource(R.drawable.ic_default_head);
-        tvAvatar.setText(R.string.app_name);
-        tvSign.setText("这个家伙很懒，什么也没有留下～～");
-        navHeader.setOnClickListener(this);
-    }
 
     protected void initListeners() {
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, binding.drawerLayout, binding.includeMain.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         binding.drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        //侧边栏点击事件
-        binding.navView.setNavigationItemSelectedListener(menuItem -> {
-            if (menuItem.isCheckable()) {
-                binding.drawerLayout.closeDrawers();
-                return handleNavigationItemSelected(menuItem);
-            } else {
-                int id = menuItem.getItemId();
-                if (id == R.id.nav_settings) {
-                    openNewPage(SettingsFragment.class);
-                } else if (id == R.id.nav_about) {
-                    openNewPage(AboutFragment.class);
-                } else {
-                    XToastUtils.toast("点击了:" + menuItem.getTitle());
-                }
-            }
-            return true;
-        });
         //主页事件监听
         binding.includeMain.viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -177,7 +132,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements V
                 MenuItem item = binding.includeMain.bottomNavigation.getMenu().getItem(position);
                 binding.includeMain.toolbar.setTitle(item.getTitle());
                 item.setChecked(true);
-                updateSideNavStatus(item);
             }
 
             @Override
@@ -188,21 +142,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements V
         binding.includeMain.bottomNavigation.setOnNavigationItemSelectedListener(this);
     }
 
-    /**
-     * 处理侧边栏点击事件
-     *
-     * @param menuItem
-     * @return
-     */
-    private boolean handleNavigationItemSelected(@NonNull MenuItem menuItem) {
-        int index = CollectionUtils.arrayIndexOf(mTitles, menuItem.getTitle());
-        if (index != -1) {
-            binding.includeMain.toolbar.setTitle(menuItem.getTitle());
-            binding.includeMain.viewPager.setCurrentItem(index, false);
-            return true;
-        }
-        return false;
-    }
+
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
@@ -219,9 +159,9 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements V
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if (id == R.id.nav_header) {
+      /*  if (id == R.id.nav_header) {
             XToastUtils.toast("点击头部！");
-        }
+        }*/
     }
 
     //================Navigation================//
@@ -239,23 +179,12 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements V
             binding.includeMain.toolbar.setTitle(menuItem.getTitle());
             binding.includeMain.viewPager.setCurrentItem(index, false);
 
-            updateSideNavStatus(menuItem);
             return true;
         }
         return false;
     }
 
-    /**
-     * 更新侧边栏菜单选中状态
-     *
-     * @param menuItem
-     */
-    private void updateSideNavStatus(MenuItem menuItem) {
-        MenuItem side = binding.navView.getMenu().findItem(menuItem.getItemId());
-        if (side != null) {
-            side.setChecked(true);
-        }
-    }
+
 
     /**
      * 菜单、返回键响应

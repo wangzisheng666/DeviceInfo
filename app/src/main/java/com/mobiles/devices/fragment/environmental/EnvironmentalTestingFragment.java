@@ -15,7 +15,7 @@
  *
  */
 
-package com.mobiles.devices.fragment.news;
+package com.mobiles.devices.fragment.environmental;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -23,49 +23,37 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 
 import com.mobiles.devices.core.BaseFragment;
-import com.mobiles.devices.databinding.FragmentGridItemBinding;
+import com.mobiles.devices.databinding.FragmentEnvironmentalTestingBinding;
 import com.xuexiang.xpage.annotation.Page;
-import com.xuexiang.xrouter.annotation.AutoWired;
-import com.xuexiang.xrouter.launcher.XRouter;
+import com.xuexiang.xpage.enums.CoreAnim;
+import com.xuexiang.xui.widget.actionbar.TitleBar;
 
 /**
  * @author xuexiang
- * @since 2021/6/30 1:21 AM
+ * @since 2019-10-30 00:19
  */
-@Page
-public class GridItemFragment extends BaseFragment<FragmentGridItemBinding> {
-
-    public static final String KEY_TITLE_NAME = "title_name";
-
-    /**
-     * 自动注入参数，不能是private
-     */
-    @AutoWired(name = KEY_TITLE_NAME)
-    String title;
+@Page(anim = CoreAnim.none)
+public class EnvironmentalTestingFragment extends BaseFragment<FragmentEnvironmentalTestingBinding> {
 
     @NonNull
     @Override
-    protected FragmentGridItemBinding viewBindingInflate(LayoutInflater inflater, ViewGroup container) {
-        return FragmentGridItemBinding.inflate(inflater, container, false);
+    protected FragmentEnvironmentalTestingBinding viewBindingInflate(LayoutInflater inflater, ViewGroup container) {
+        return FragmentEnvironmentalTestingBinding.inflate(inflater, container, false);
     }
 
+    /**
+     * @return 返回为 null意为不需要导航栏
+     */
     @Override
-    protected void initArgs() {
-        // 自动注入参数必须在initArgs里进行注入
-        XRouter.getInstance().inject(this);
+    protected TitleBar initTitle() {
+        return null;
     }
 
-    @Override
-    protected String getPageTitle() {
-        return title;
-    }
-
-
-
+    /**
+     * 初始化控件
+     */
     @Override
     protected void initViews() {
 
     }
-
-
 }

@@ -19,7 +19,6 @@ package com.mobiles.devices.utils;
 
 import android.content.Context;
 
-import com.mobiles.devices.activity.LoginActivity;
 import com.umeng.analytics.MobclickAgent;
 import com.xuexiang.xutil.app.ActivityUtils;
 import com.xuexiang.xutil.common.StringUtils;
@@ -94,8 +93,7 @@ public final class TokenUtils {
         clearToken();
         XToastUtils.success("登出成功！");
         SettingUtils.setIsAgreePrivacy(false);
-        //跳转到登录页
-        ActivityUtils.startActivity(LoginActivity.class);
+
     }
 
 }
