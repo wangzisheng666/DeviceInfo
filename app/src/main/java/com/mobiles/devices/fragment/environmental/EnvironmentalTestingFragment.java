@@ -22,18 +22,24 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 
+import com.mobiles.devices.R;
 import com.mobiles.devices.core.BaseFragment;
 import com.mobiles.devices.databinding.FragmentEnvironmentalTestingBinding;
+import com.mobiles.devices.fragment.other.AboutFragment;
+import com.mobiles.devices.fragment.other.SettingsFragment;
+import com.mobiles.devices.utils.XToastUtils;
 import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xpage.enums.CoreAnim;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
+import com.xuexiang.xui.widget.textview.supertextview.SuperTextView;
 
 /**
+ * 环境检测
  * @author xuexiang
  * @since 2019-10-30 00:19
  */
 @Page(anim = CoreAnim.none)
-public class EnvironmentalTestingFragment extends BaseFragment<FragmentEnvironmentalTestingBinding> {
+public class EnvironmentalTestingFragment extends BaseFragment<FragmentEnvironmentalTestingBinding> implements SuperTextView.OnSuperTextViewClickListener {
 
     @NonNull
     @Override
@@ -55,5 +61,24 @@ public class EnvironmentalTestingFragment extends BaseFragment<FragmentEnvironme
     @Override
     protected void initViews() {
 
+    }
+
+    @Override
+    protected void initListeners() {
+        binding.envRoot.setOnSuperTextViewClickListener(this);
+        binding.envAdb.setOnSuperTextViewClickListener(this);
+        binding.envFrida.setOnSuperTextViewClickListener(this);
+    }
+
+    @Override
+    public void onClick(SuperTextView superTextView) {
+        int id = superTextView.getId();
+        if (id == R.id.env_root) {
+            XToastUtils.toast("root");
+        } else if (id == R.id.env_adb) {
+            XToastUtils.toast("adb");
+        }else if (id == R.id.env_frida) {
+            XToastUtils.toast("frida");
+        }
     }
 }

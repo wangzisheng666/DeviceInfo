@@ -160,11 +160,10 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements V
     public void onClick(View v) {
         int id = v.getId();
       /*  if (id == R.id.nav_header) {
-            XToastUtils.toast("点击头部！");
+
         }*/
     }
 
-    //================Navigation================//
 
     /**
      * 底部导航栏点击事件
