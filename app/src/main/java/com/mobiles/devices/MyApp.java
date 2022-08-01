@@ -52,6 +52,7 @@ public class MyApp extends Application {
     private void initLibs() {
         // X系列基础库初始化
         XBasicLibInit.init(this);
+        
         // 版本更新初始化
         XUpdateInit.init(this);
         // 运营统计数据
