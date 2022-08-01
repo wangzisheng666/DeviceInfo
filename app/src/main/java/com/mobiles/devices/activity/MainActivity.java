@@ -109,8 +109,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements V
     }
 
     private void initData() {
-        GuideTipsDialog.showTips(this);
-        XUpdateInit.checkUpdate(this, false);
+       // GuideTipsDialog.showTips(this);
+        //XUpdateInit.checkUpdate(this, false);
     }
 
 
