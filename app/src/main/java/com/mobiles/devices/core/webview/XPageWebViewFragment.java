@@ -383,7 +383,7 @@ public class XPageWebViewFragment extends BaseFragment<FragmentAgentwebBinding> 
         }
 
         if (TextUtils.isEmpty(target)) {
-            target = "https://github.com/xuexiangjys";
+            target = "www.baidu.com";
         }
         return target;
     }
