@@ -387,7 +387,7 @@ public class AgentWebFragment extends Fragment implements FragmentKeyDown {
         }
 
         if (TextUtils.isEmpty(target)) {
-            target = "https://github.com/xuexiangjys";
+            target = "www.baidu.com";
         }
         return target;
     }

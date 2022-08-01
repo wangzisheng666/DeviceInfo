@@ -16,15 +16,15 @@
     <string name="menu_settings">设置</string>
     <string name="menu_about">关于</string>
 
-    <string name="about_copyright">© %1$s xuexiangjys All rights reserved.</string>
+    <string name="about_copyright">© %1$s  All rights reserved.</string>
     <string name="about_item_homepage">访问官网</string>
     <string name="about_item_author_github">联系作者</string>
     <string name="about_item_donation_link">捐赠作者</string>
     <string name="about_item_add_qq_group">QQ交流群</string>
-    <string name="url_project_github">https://github.com/xuexingjys/TempateAppProject</string>
-    <string name="url_author_github">https://gitee.com/xuexangjys/xuexiagjys</string>
-    <string name="url_donation_link">https://gitee.com/xuexangjys/Resource/lob/master/doc/sponsor.md</string>
-    <string name="url_add_qq_group">http://qm.qq.com/cgi-bi/qm/qr?k=tiP-E6rDf077PRNfp2lNVcc9RsglPCM</string>
+    <string name="url_project_github">www.baidu.com</string>
+    <string name="url_author_github">www.baidu.com</string>
+    <string name="url_donation_link">www.baidu.com</string>
+    <string name="url_add_qq_group">www.baidu.com</string>
 
     <string name="lab_yes">是</string>
     <string name="lab_no">否</string>
