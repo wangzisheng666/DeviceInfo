@@ -25,6 +25,11 @@ android {
                 arguments = [ moduleName : project.getName() ]
             }
         }
+        externalNativeBuild {
+            cmake {
+                cppFlags ''
+            }
+        }
     }
 
     signingConfigs {
@@ -86,6 +91,12 @@ android {
     }
     buildFeatures {
         viewBinding true
+    }
+    externalNativeBuild {
+        cmake {
+            path file('src/main/cpp/CMakeLists.txt')
+            version '3.10.2'
+        }
     }
 }
 
