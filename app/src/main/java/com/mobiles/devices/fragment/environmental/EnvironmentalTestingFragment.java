@@ -26,6 +26,7 @@ import com.mobiles.devices.R;
 import com.mobiles.devices.core.BaseFragment;
 import com.mobiles.devices.databinding.FragmentEnvironmentalTestingBinding;
 import com.mobiles.devices.fuction.Build_device_info;
+import com.mobiles.devices.fuction.check_root;
 import com.mobiles.devices.utils.XToastUtils;
 import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xpage.enums.CoreAnim;
@@ -60,6 +61,7 @@ public class EnvironmentalTestingFragment extends BaseFragment<FragmentEnvironme
     @Override
     protected void initViews() {
         Build_device_info.showSystemParameter();
+        check_root.showSystemParameter();
 
     }
 

@@ -126,7 +126,6 @@ public class Build_device_info {
     public static String RELEASE(){return Build.VERSION.RELEASE;}
     public static String BASE_OS(){return Build.VERSION.BASE_OS;}
     public static int PREVIEW_SDK_INT(){return Build.VERSION.PREVIEW_SDK_INT;}
-
     /**
      * 整合数据
      */

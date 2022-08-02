@@ -17,48 +17,63 @@
 
 package com.mobiles.devices.fuction;
 
+import static com.mobiles.devices.core.webview.AgentWebFragment.TAG;
+import static com.umeng.commonsdk.statistics.AnalyticsConstants.LOG_TAG;
+
+import android.os.FileUtils;
+import android.util.Log;
+
 import java.io.File;
 
+
+
 public class check_root {
-
-
-    private boolean checkRootFile() {
-        int v4_2;
-        try {
-            if(new File("/system/app/Superuser.apk").exists()) {
-                return true;
-            }
-            String[] v3 = {"/data/local/", "/data/local/bin/", "/data/local/xbin/", "/sbin/", "/su/bin/", "/system/bin/", "/system/bin/.ext/", "/system/bin/failsafe/", "/system/sd/xbin/", "/system/usr/we-need-root/", "/system/xbin/", "/system/sbin/", "/vendor/bin/", "/cache", "/data", "/dev"};
-            int v4;
-            for(v4 = 0; v4 < 16; ++v4) {
-                if(new File(v3[v4], "su").exists()) {
-                    return true;
-                }
-            }
-            int v4_1;
-            for(v4_1 = 0; v4_1 < 16; ++v4_1) {
-                if(new File(v3[v4_1], "busybox").exists()) {
-                    return true;
-                }
-            }
-            v4_2 = 0;
-            while(true) {
-
-                if(v4_2 >= 16) {
-                    return false;
-                }
-                boolean v5 = new File(v3[v4_2], "magisk").exists();
-                if(v5) {
-                    return true;
-                }
-                break;
-            }
-
-        }
-        catch(Throwable v0) {
-            return false;
+    private static boolean checkDeviceKey() {
+        String buildTags = android.os.Build.TAGS;
+        if (buildTags != null && buildTags.contains("test-keys")) {
+            return true;
         }
         return false;
+    }
+    // 检测是否存在可执行文件su 、busybox
+    private static boolean checkSuFile() {
+        final String filePaths[] = {"/system/bin/", "/system/xbin/", "/system/sbin/", "/sbin/", "/vendor/bin/", "/su/bin/","/data/local","/system/bin/failsafe","/data/local/bin","/data/local/xbin","/data","/cache"};
+        for (int i = 0; i < filePaths.length; i++) {
+            File f = new File(filePaths[i] + "su");
+            if (f != null && f.exists()) {
+                return true;
+            }
+        }
+        for (int i = 0; i < filePaths.length; i++) {
+            File f = new File(filePaths[i] + "busybox");
+            if (f != null && f.exists()) {
+                return true;
+            }
+        }
+        return false;
+    }
+    //检测环境变量PATH上是否存在su、magisk
+    private static boolean checkSuPath() {
+        String[] paths = System.getenv("PATH").split(":");
+        for (String path : paths) {
+            if (new File(path, "su").exists()) {
+                return true;
+            }
+            if (new File(path, "magisk").exists()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+
+    public static void showSystemParameter() {
+        String TAG = "CHEKROOT：";
+        Log.e(TAG, "ROOT_test-keys：" + checkDeviceKey());
+        Log.e(TAG, "checkSuFile：" + checkSuFile());
+        Log.e(TAG, "checkSuPath：" + checkSuPath());
+
     }
 
 
