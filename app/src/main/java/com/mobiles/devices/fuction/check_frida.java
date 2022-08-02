@@ -18,4 +18,8 @@
 package com.mobiles.devices.fuction;
 
 public class check_frida {
+    static {
+       System.loadLibrary("devices");
+    }
+
 }
