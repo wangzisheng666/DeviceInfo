@@ -16,7 +16,6 @@ public class Build_device_info {
      * @return  手机型号
      */
     public static String getSystemModel() {
-
         return android.os.Build.MODEL;
     }
     /**
@@ -25,7 +24,6 @@ public class Build_device_info {
      */
     public static String getDeviceBrand() {
         return android.os.Build.BRAND;
-
     }
     /**
      * 获取产品号Build.PRODUCT
@@ -121,6 +119,13 @@ public class Build_device_info {
      * bootloader
      */
     public static String getbootloader(){return Build.BOOTLOADER;}
+    public static String CODENAME(){return Build.VERSION.CODENAME;}
+    public static String SECURITY_PATCH(){return Build.VERSION.SECURITY_PATCH;}
+    public static String INCREMENTAL(){return Build.VERSION.INCREMENTAL;}
+    public static String getRadioVersion(){return Build.getRadioVersion();}
+    public static String RELEASE(){return Build.VERSION.RELEASE;}
+    public static String BASE_OS(){return Build.VERSION.BASE_OS;}
+    public static int PREVIEW_SDK_INT(){return Build.VERSION.PREVIEW_SDK_INT;}
 
     /**
      * 整合数据
@@ -150,6 +155,13 @@ public class Build_device_info {
         Log.e(TAG, "Build.RADIO：" + getRadio());
         Log.e(TAG, "序列号（SERIAL）：" + getSerial());
         Log.e(TAG, "bootloader：" + getbootloader());
+        Log.e(TAG, "CODENAME：" + CODENAME());
+        Log.e(TAG, "SECURITY_PATCH：" + SECURITY_PATCH());
+        Log.e(TAG, "INCREMENTAL：" + INCREMENTAL());
+        Log.e(TAG, "getRadioVersion：" + getRadioVersion());
+        Log.e(TAG, "RELEASE：" + RELEASE());
+        Log.e(TAG, "BASE_OS：" + BASE_OS());
+        Log.e(TAG, "PREVIEW_SDK_INT：" + PREVIEW_SDK_INT());
 
     }
 

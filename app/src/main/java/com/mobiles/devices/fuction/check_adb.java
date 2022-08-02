@@ -47,7 +47,7 @@ public class check_adb {
         return a2.substring(0, a2.length() - 1);
     }
     public static String chenk_all(Context ctx) {
-        String TAG = "环境检测：";
+        String TAG = "adb环境检测：";
         Log.e(TAG, "DebuggerConnected：" + isDebuggerConnected());
         Log.e(TAG, "adb_enabled：" + adb_enabled(ctx));
         Log.e(TAG, "init_svc_adbd：" + init_svc_adbd());
