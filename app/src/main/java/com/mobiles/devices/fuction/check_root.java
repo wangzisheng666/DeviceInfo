@@ -28,6 +28,8 @@ import java.io.File;
 
 
 public class check_root {
+
+
     private static boolean checkDeviceKey() {
         String buildTags = android.os.Build.TAGS;
         if (buildTags != null && buildTags.contains("test-keys")) {
@@ -35,7 +37,10 @@ public class check_root {
         }
         return false;
     }
-    // 检测是否存在可执行文件su 、busybox
+
+    /**
+     * 检测是否存在可执行文件su 、busybox
+     */
     private static boolean checkSuFile() {
         final String filePaths[] = {"/system/bin/", "/system/xbin/", "/system/sbin/", "/sbin/", "/vendor/bin/", "/su/bin/","/data/local","/system/bin/failsafe","/data/local/bin","/data/local/xbin","/data","/cache"};
         for (int i = 0; i < filePaths.length; i++) {
@@ -52,7 +57,10 @@ public class check_root {
         }
         return false;
     }
-    //检测环境变量PATH上是否存在su、magisk
+
+    /**
+     * 检测环境变量PATH上是否存在su、magisk
+     */
     private static boolean checkSuPath() {
         String[] paths = System.getenv("PATH").split(":");
         for (String path : paths) {
