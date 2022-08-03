@@ -35,7 +35,7 @@ import com.xuexiang.xui.widget.textview.supertextview.SuperTextView;
 
 /**
  * 环境检测
- * @author xuexiang
+ * @author prince
  * @since 2019-10-30 00:19
  */
 @Page(anim = CoreAnim.none)
