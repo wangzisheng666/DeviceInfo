@@ -21,5 +21,8 @@ public class check_frida {
     static {
        System.loadLibrary("devices");
     }
+    //有点不会写
+  //  public static native boolean check_frida();
+
 
 }
