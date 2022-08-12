@@ -15,7 +15,7 @@
  *
  */
 
-package com.mobiles.devices.fragment.profile;
+package com.mobiles.devices.fragment.openEnv;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;

@@ -33,7 +33,7 @@ import com.mobiles.devices.core.BaseFragment;
 import com.mobiles.devices.databinding.ActivityMainBinding;
 import com.mobiles.devices.fragment.device.DeviceInfoFragment;
 import com.mobiles.devices.fragment.environmental.EnvironmentalTestingFragment;
-import com.mobiles.devices.fragment.profile.OpenEnvFragment;
+import com.mobiles.devices.fragment.openEnv.OpenEnvFragment;
 import com.mobiles.devices.core.BaseActivity;
 import com.mobiles.devices.fragment.other.AboutFragment;
 import com.mobiles.devices.utils.XToastUtils;
