@@ -73,11 +73,36 @@ public class OpenEnvFragment extends BaseFragment<FragmentOpenEnvBinding> implem
         binding.open1.setOnSuperTextViewClickListener(this);
 
 
-        binding.openDebugable.setOnSuperTextViewClickListener(superTextView -> superTextView.setSwitchIsChecked(!superTextView.getSwitchIsChecked(), false)).setSwitchCheckedChangeListener((buttonView, isChecked) -> XToastUtils.toast("isChecked : " + isChecked));
+       /* binding.openDebugable.setSwitchCheckedChangeListener((buttonView, isChecked) -> {
+            if(isChecked){
+                XToastUtils.toast("GPU测评开启");
+            }else { XToastUtils.toast("GPU测评关闭");
+                 }
+        });*/
 
-        binding.openFrida.setOnSuperTextViewClickListener(superTextView -> superTextView.setSwitchIsChecked(!superTextView.getSwitchIsChecked(), false)).setSwitchCheckedChangeListener((buttonView, isChecked) -> XToastUtils.toast("isChecked : " + isChecked));
+        binding.openDebugable.setOnSuperTextViewClickListener(superTextView -> superTextView.setSwitchIsChecked(!superTextView.getSwitchIsChecked(), false)).setSwitchCheckedChangeListener((buttonView, isChecked)  -> {
+            if(isChecked){
+                XToastUtils.success("ro.debug开启");
+            }else {
+                XToastUtils.error("ro.debug关闭");
+            }
+        });
 
-        binding.openFridaBig.setOnSuperTextViewClickListener(superTextView -> superTextView.setSwitchIsChecked(!superTextView.getSwitchIsChecked(), false)).setSwitchCheckedChangeListener((buttonView, isChecked) -> XToastUtils.toast("isChecked : " + isChecked));
+        binding.openFrida.setOnSuperTextViewClickListener(superTextView -> superTextView.setSwitchIsChecked(!superTextView.getSwitchIsChecked(), false)).setSwitchCheckedChangeListener((buttonView, isChecked) -> {
+            if(isChecked){
+                XToastUtils.success("frida加强版开启");
+            }else {
+                XToastUtils.error("frida加强版关闭");
+            }
+        });
+
+        binding.openFridaBig.setOnSuperTextViewClickListener(superTextView -> superTextView.setSwitchIsChecked(!superTextView.getSwitchIsChecked(), false)).setSwitchCheckedChangeListener((buttonView, isChecked) -> {
+            if(isChecked){
+                XToastUtils.success("frida开启");
+            }else {
+                XToastUtils.error("frida关闭");
+            }
+        });
 
         try {
             Utils.run("myfs1","");
