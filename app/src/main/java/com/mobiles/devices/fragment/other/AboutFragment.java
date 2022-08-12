@@ -28,6 +28,7 @@ import com.mobiles.devices.databinding.FragmentAboutBinding;
 import com.mobiles.devices.core.webview.AgentWebActivity;
 import com.mobiles.devices.utils.Utils;
 import com.xuexiang.xpage.annotation.Page;
+import com.xuexiang.xui.widget.actionbar.TitleBar;
 import com.xuexiang.xui.widget.grouplist.XUIGroupListView;
 import com.xuexiang.xutil.app.AppUtils;
 
@@ -58,6 +59,11 @@ public class AboutFragment extends BaseFragment<FragmentAboutBinding> {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy", Locale.CHINA);
         String currentYear = dateFormat.format(new Date());
         binding.tvCopyright.setText(String.format(getResources().getString(R.string.about_copyright), currentYear));
+    }
+
+    @Override
+    protected TitleBar initTitle() {
+        return null;
     }
 
     @NonNull

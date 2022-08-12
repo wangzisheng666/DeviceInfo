@@ -17,17 +17,13 @@
 
 package com.mobiles.devices.activity;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
@@ -37,24 +33,18 @@ import com.mobiles.devices.core.BaseFragment;
 import com.mobiles.devices.databinding.ActivityMainBinding;
 import com.mobiles.devices.fragment.device.DeviceInfoFragment;
 import com.mobiles.devices.fragment.environmental.EnvironmentalTestingFragment;
-import com.mobiles.devices.fragment.profile.ProfileFragment;
+import com.mobiles.devices.fragment.profile.OpenEnvFragment;
 import com.mobiles.devices.core.BaseActivity;
 import com.mobiles.devices.fragment.other.AboutFragment;
-import com.mobiles.devices.fragment.other.SettingsFragment;
-import com.mobiles.devices.utils.Utils;
 import com.mobiles.devices.utils.XToastUtils;
-import com.mobiles.devices.utils.sdkinit.XUpdateInit;
 import com.mobiles.devices.widget.GuideTipsDialog;
 import com.xuexiang.xaop.annotation.SingleClick;
 import com.xuexiang.xui.adapter.FragmentAdapter;
 import com.xuexiang.xui.utils.ResUtils;
-import com.xuexiang.xui.utils.ThemeUtils;
 import com.xuexiang.xui.utils.WidgetUtils;
-import com.xuexiang.xui.widget.imageview.RadiusImageView;
 import com.xuexiang.xutil.XUtil;
 import com.xuexiang.xutil.common.ClickUtils;
 import com.xuexiang.xutil.common.CollectionUtils;
-import com.xuexiang.xutil.display.Colors;
 
 /**
  * 程序主页面,只是一个简单的Tab例子
@@ -99,9 +89,10 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements V
 
         //主页内容填充
         BaseFragment[] fragments = new BaseFragment[]{
-                new DeviceInfoFragment(),
+                new OpenEnvFragment(),
                 new EnvironmentalTestingFragment(),
-                new ProfileFragment()
+                new DeviceInfoFragment()
+
         };
         FragmentAdapter<BaseFragment> adapter = new FragmentAdapter<>(getSupportFragmentManager(), fragments);
         binding.includeMain.viewPager.setOffscreenPageLimit(mTitles.length - 1);
@@ -116,9 +107,9 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements V
 
 
     protected void initListeners() {
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, binding.drawerLayout, binding.includeMain.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+      /*  ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, binding.drawerLayout, binding.includeMain.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         binding.drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
+        toggle.syncState();*/
 
         //主页事件监听
         binding.includeMain.viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {

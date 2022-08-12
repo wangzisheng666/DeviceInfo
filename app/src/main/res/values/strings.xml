@@ -5,9 +5,9 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="menu_news">设备信息</string>
+    <string name="menu_news">环境开启</string>
     <string name="menu_trending">环境检测</string>
-    <string name="menu_profile">我的</string>
+    <string name="menu_profile">设备信息</string>
 
     <string name="menu_notifications">通知</string>
     <string name="menu_issues">问题</string>

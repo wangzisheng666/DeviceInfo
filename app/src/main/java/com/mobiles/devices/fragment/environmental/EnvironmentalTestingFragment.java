@@ -25,6 +25,7 @@ import androidx.annotation.NonNull;
 import com.mobiles.devices.R;
 import com.mobiles.devices.core.BaseFragment;
 import com.mobiles.devices.databinding.FragmentEnvironmentalTestingBinding;
+import com.mobiles.devices.fragment.other.CheckResultFragment;
 import com.mobiles.devices.fuction.Build_device_info;
 import com.mobiles.devices.fuction.check_SElinux;
 import com.mobiles.devices.fuction.check_root;
@@ -79,6 +80,7 @@ public class EnvironmentalTestingFragment extends BaseFragment<FragmentEnvironme
         int id = superTextView.getId();
         if (id == R.id.env_root) {
             XToastUtils.toast("root");
+            openNewPage(CheckResultFragment.class,"test","test");
         } else if (id == R.id.env_adb) {
             XToastUtils.toast("adb");
         }else if (id == R.id.env_frida) {

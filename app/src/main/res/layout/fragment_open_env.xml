@@ -32,36 +32,42 @@
                 android:paddingTop="20dp">
 
                 <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
-                    style="@style/InfoItem.Account"
-                    app:sLeftTextString="账号" />
+                    style="@style/InfoItem.Account1"
+                    android:id="@+id/open_frida"
+                    app:sLeftTextString="Frida"
+                    app:sRightViewType="switchBtn"
+                    app:sSwitchIsChecked="true"
+                    app:sThumbResource="@drawable/thumb"
+                    app:sTrackResource="@drawable/track"
+                    />
 
                 <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
-                    style="@style/InfoItem.Account"
-                    app:sLeftTextString="通知" />
+                    style="@style/InfoItem.Account1"
+                    android:id="@+id/open_frida_big"
+                    app:sLeftTextString="Frida隐藏版"
+                    app:sRightViewType="switchBtn"
+                    app:sSwitchIsChecked="true"
+                    app:sThumbResource="@drawable/thumb"
+                    app:sTrackResource="@drawable/track"/>
+
+
 
                 <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
-                    style="@style/InfoItem.Account"
-                    app:sDividerLineType="none"
-                    app:sLeftTextString="收藏" />
-
-
-                <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
-                    style="@style/InfoItem.Account"
+                    android:id="@+id/open_debugable"
+                    style="@style/InfoItem.Account1"
                     android:layout_marginTop="20dp"
-                    app:sDividerLineType="none"
-                    app:sLeftTextString="意见反馈" />
+                    app:sCenterTextString="全局调试"
+                    app:sLeftTextString="ro.debugable"
+                    app:sRightViewType="switchBtn"
+                    app:sSwitchIsChecked="true"
+                    app:sThumbResource="@drawable/thumb"
+                    app:sTrackResource="@drawable/track"/>
 
                 <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
-                    android:id="@+id/menu_settings"
-                    style="@style/InfoItem.Account"
-                    android:layout_marginTop="20dp"
-                    app:sLeftTextString="设置" />
-
-                <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
-                    android:id="@+id/menu_about"
+                    android:id="@+id/open_1"
                     style="@style/InfoItem.Account"
                     app:sDividerLineType="none"
-                    app:sLeftTextString="关于" />
+                    app:sLeftTextString="test" />
 
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
