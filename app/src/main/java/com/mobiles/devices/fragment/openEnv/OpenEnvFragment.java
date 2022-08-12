@@ -80,36 +80,34 @@ public class OpenEnvFragment extends BaseFragment<FragmentOpenEnvBinding> implem
                  }
         });*/
 
-        binding.openDebugable.setOnSuperTextViewClickListener(superTextView -> superTextView.setSwitchIsChecked(!superTextView.getSwitchIsChecked(), false)).setSwitchCheckedChangeListener((buttonView, isChecked)  -> {
-            if(isChecked){
-                XToastUtils.success("ro.debug开启");
-            }else {
-                XToastUtils.error("ro.debug关闭");
-            }
-        });
 
         binding.openFrida.setOnSuperTextViewClickListener(superTextView -> superTextView.setSwitchIsChecked(!superTextView.getSwitchIsChecked(), false)).setSwitchCheckedChangeListener((buttonView, isChecked) -> {
             if(isChecked){
-                XToastUtils.success("frida加强版开启");
-            }else {
-                XToastUtils.error("frida加强版关闭");
-            }
-        });
-
-        binding.openFridaBig.setOnSuperTextViewClickListener(superTextView -> superTextView.setSwitchIsChecked(!superTextView.getSwitchIsChecked(), false)).setSwitchCheckedChangeListener((buttonView, isChecked) -> {
-            if(isChecked){
+                exe_cmd("myfs1");
                 XToastUtils.success("frida开启");
             }else {
                 XToastUtils.error("frida关闭");
             }
         });
 
-        try {
-            Utils.run("myfs1","");
-            Utils.run("myfs1","");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        binding.openFridaBig.setOnSuperTextViewClickListener(superTextView -> superTextView.setSwitchIsChecked(!superTextView.getSwitchIsChecked(), false)).setSwitchCheckedChangeListener((buttonView, isChecked) -> {
+            if(isChecked){
+                exe_cmd("myfs1");
+                XToastUtils.success("frida加强版开启");
+            }else {
+                XToastUtils.error("frida加强版关闭");
+            }
+        });
+
+        binding.openDebugable.setOnSuperTextViewClickListener(superTextView -> superTextView.setSwitchIsChecked(!superTextView.getSwitchIsChecked(), false)).setSwitchCheckedChangeListener((buttonView, isChecked)  -> {
+            if(isChecked){
+                exe_cmd("");
+                XToastUtils.success("ro.debug开启");
+            }else {
+                XToastUtils.error("ro.debug关闭");
+            }
+        });
+
 
     }
 
@@ -121,6 +119,14 @@ public class OpenEnvFragment extends BaseFragment<FragmentOpenEnvBinding> implem
             openNewPage(SettingsFragment.class);
         } else if (id == R.id.open_debugable) {
             openNewPage(AboutFragment.class);
+        }
+    }
+
+    private void exe_cmd(String cmd){
+        try {
+            Utils.run(cmd,"");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
