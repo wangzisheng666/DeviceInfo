@@ -124,6 +124,7 @@ dependencies {
     implementation 'com.umeng.umsdk:common:9.3.8'
     implementation  'com.umeng.umsdk:asms:1.2.1'
 
+    implementation 'org.apache.commons:commons-lang3:3.7'
     //预加载占位控件
     implementation 'me.samlss:broccoli:1.0.0'
 

@@ -17,6 +17,9 @@
 
 package com.mobiles.devices.fragment.openEnv;
 
+import static com.mobiles.devices.utils.Utils.execRootCmd;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -27,6 +30,8 @@ import com.mobiles.devices.core.BaseFragment;
 import com.mobiles.devices.databinding.FragmentOpenEnvBinding;
 import com.mobiles.devices.fragment.other.AboutFragment;
 import com.mobiles.devices.fragment.other.SettingsFragment;
+import com.mobiles.devices.utils.CommandExecution;
+import com.mobiles.devices.utils.ShellUtils;
 import com.mobiles.devices.utils.Utils;
 import com.mobiles.devices.utils.XToastUtils;
 import com.xuexiang.xaop.annotation.SingleClick;
@@ -35,7 +40,12 @@ import com.xuexiang.xpage.enums.CoreAnim;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
 import com.xuexiang.xui.widget.textview.supertextview.SuperTextView;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+
+import org.apache.commons.lang3.StringUtils;
 
 
 /**
@@ -44,6 +54,8 @@ import java.io.IOException;
  */
 @Page(anim = CoreAnim.none)
 public class OpenEnvFragment extends BaseFragment<FragmentOpenEnvBinding> implements SuperTextView.OnSuperTextViewClickListener {
+    String pid = null;
+    public boolean isOpen =false;
 
     @NonNull
     @Override
@@ -80,28 +92,92 @@ public class OpenEnvFragment extends BaseFragment<FragmentOpenEnvBinding> implem
                  }
         });*/
 
-
         binding.openFrida.setOnSuperTextViewClickListener(superTextView -> superTextView.setSwitchIsChecked(!superTextView.getSwitchIsChecked(), false)).setSwitchCheckedChangeListener((buttonView, isChecked) -> {
             if(isChecked){
+                if(!isOpen){
+                    String[] str1 = new String[]{"myfs1 &"};
+                    CommandExecution.execCommand(str1,true);
+                    String result =  execRootCmd("ps -e |grep myfs1");
+                    pid = StringUtils.substringBetween(result, "root", " 1 ");
+                    Log.i("TAG",pid+"result1.result = " + result);
+                    XToastUtils.success("frida开启成功");
+                    isOpen = true;
+                }else {
+                    binding.openFridaBig.setSwitchIsChecked(false);
+                    String[] str1 = new String[]{"kill  "+ pid };
+                    CommandExecution.execCommand(str1,true);
+
+                    String[] str2 = new String[]{"myfs1 &"};
+                    CommandExecution.execCommand(str2,true);
+                    String result =  execRootCmd("ps -e |grep myfs1");
+                    pid = StringUtils.substringBetween(result, "root", " 1 ");
+                    XToastUtils.success("frida开启成功");
+                }
+
+       /*         ShellUtils.CommandResult result = ShellUtils.execCommand("myfs1",true);  //主要是这条语句，字符串中是命令
+                Log.i(TAG,"result1.result = " + result.result);
+                Log.i(TAG,"result1.successMsg = " + result.successMsg);		// 有用的信息在这里，可以打印出来看看
+                Log.i(TAG,"result1.errorMsg = " + result.errorMsg);*/
+               /* Utils.shellExec("myfs1");
+                String bb =Utils.shellExec("ps -e |grep myfs1");
                 exe_cmd("myfs1");
-                XToastUtils.success("frida开启");
+               String aa = exe_cmd("ps -e |grep myfs1");
+                String[] str = new String[]{"ps -e |grep myfs1"};
+               if(bb.isEmpty()){
+                   XToastUtils.error("frida开启失败");
+                   binding.openFrida.setSwitchIsChecked(false);
+               }else if(exe_cmd("ps -e |grep myfs1").contains("myfs1")){
+                   XToastUtils.success("frida开启");
+               }*/
             }else {
+                String[] str1 = new String[]{"kill  "+ pid };
+                CommandExecution.execCommand(str1,true);
                 XToastUtils.error("frida关闭");
+                isOpen = false;
             }
         });
 
         binding.openFridaBig.setOnSuperTextViewClickListener(superTextView -> superTextView.setSwitchIsChecked(!superTextView.getSwitchIsChecked(), false)).setSwitchCheckedChangeListener((buttonView, isChecked) -> {
             if(isChecked){
-                exe_cmd("myfs1");
-                XToastUtils.success("frida加强版开启");
+                if(!isOpen){
+                    String[] str1 = new String[]{"myfs2 &"};
+                    CommandExecution.execCommand(str1,true);
+                    String result =  execRootCmd("ps -e |grep myfs2");
+                    pid = StringUtils.substringBetween(result, "root", " 1 ");
+                    Log.i("TAG",pid+"result1.result = " + result);
+                    XToastUtils.success("frida隐藏版开启");
+                    isOpen = true;
+                }else {
+                    binding.openFrida.setSwitchIsChecked(false);
+                    String[] str1 = new String[]{"kill  "+ pid };
+                    CommandExecution.execCommand(str1,true);
+
+                    String[] str2 = new String[]{"myfs2 &"};
+                    CommandExecution.execCommand(str2,true);
+                    String result =  execRootCmd("ps -e |grep myfs2");
+                    pid = StringUtils.substringBetween(result, "root", " 1 ");
+                    XToastUtils.success("frida隐藏版开启");
+                   // XToastUtils.error("frida隐藏版开启未成功，请先关闭Frida");
+
+                }
+
             }else {
-                XToastUtils.error("frida加强版关闭");
+                String[] str1 = new String[]{"kill  "+ pid };
+                CommandExecution.execCommand(str1,true);
+                XToastUtils.error("frida隐藏版关闭");
+                isOpen = false;
             }
         });
 
         binding.openDebugable.setOnSuperTextViewClickListener(superTextView -> superTextView.setSwitchIsChecked(!superTextView.getSwitchIsChecked(), false)).setSwitchCheckedChangeListener((buttonView, isChecked)  -> {
             if(isChecked){
-                exe_cmd("");
+               // execRootCmd("injectprop  ro.debuggable 1");
+              //  execRootCmd("stop;start;");
+                CommandExecution.execCommand("nohup /data/local/tmp/wan.sh &",true);
+                /*String path=copyAssetGetFilePath("wan.sh");
+                CommandExecution.execCommand("chmod 777 "+path,true);
+                CommandExecution.execCommand("nohup "+path+" &",true);*/
+                //exe_cmd_str(str);
                 XToastUtils.success("ro.debug开启");
             }else {
                 XToastUtils.error("ro.debug关闭");
@@ -122,11 +198,56 @@ public class OpenEnvFragment extends BaseFragment<FragmentOpenEnvBinding> implem
         }
     }
 
-    private void exe_cmd(String cmd){
+    private String exe_cmd(String cmd){
         try {
-            Utils.run(cmd,"");
+           return Utils.run(cmd,"/");
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return "";
+    }
+
+    private String exe_cmd_str(String[] cmd){
+        try {
+            return Utils.run1(cmd,"/");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+
+    private String copyAssetGetFilePath(String fileName) {
+        try {
+            File cacheDir = getContext().getCacheDir();
+            if (!cacheDir.exists()) {
+                cacheDir.mkdirs();
+            }
+            File outFile = new File(cacheDir, fileName);
+            if (!outFile.exists()) {
+                boolean res = outFile.createNewFile();
+                if (!res) {
+                    return null;
+                }
+            } else {
+                if (outFile.length() > 10) {//表示已经写入一次
+                    return outFile.getPath();
+                }
+            }
+            InputStream is = getContext().getAssets().open(fileName);
+            FileOutputStream fos = new FileOutputStream(outFile);
+            byte[] buffer = new byte[1024];
+            int byteCount;
+            while ((byteCount = is.read(buffer)) != -1) {
+                fos.write(buffer, 0, byteCount);
+            }
+            fos.flush();
+            is.close();
+            fos.close();
+            return outFile.getPath();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

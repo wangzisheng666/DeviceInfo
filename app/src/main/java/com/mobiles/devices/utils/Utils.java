@@ -46,11 +46,13 @@ import com.xuexiang.xutil.XUtil;
 
 import static com.mobiles.devices.core.webview.AgentWebFragment.KEY_URL;
 
+import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 
 /**
  * 工具类
@@ -201,7 +203,7 @@ public final class Utils {
         DataInputStream dis = null;
 
         try {
-            Process p = Runtime.getRuntime().exec("su");// 经过Root处理的android系统即有su命令
+            Process p = Runtime.getRuntime().exec("mysu");// 经过Root处理的android系统即有su命令
             dos = new DataOutputStream(p.getOutputStream());
             dis = new DataInputStream(p.getInputStream());
 
@@ -280,5 +282,81 @@ public final class Utils {
             ex.printStackTrace();
         }
         return result.toString();
+    }
+
+    public static synchronized String run1(String[] cmd, String workdirectory)
+            throws IOException {
+        StringBuffer result = new StringBuffer();
+        try {
+// 创建操作系统进程（也可以由Runtime.exec()启动）
+// Runtime runtime = Runtime.getRuntime();
+// Process proc = runtime.exec(cmd);
+// InputStream inputstream = proc.getInputStream();
+            ProcessBuilder builder = new ProcessBuilder(cmd);
+            InputStream in = null;
+// 设置一个路径（绝对路径了就不一定需要）
+            if (workdirectory != null) {
+// 设置工作目录（同上）
+                builder.directory(new File(workdirectory));
+// 合并标准错误和标准输出
+                builder.redirectErrorStream(true);
+// 启动一个新进程
+                Process process = builder.start();
+// 读取进程标准输出流
+                in = process.getInputStream();
+                byte[] re = new byte[1024];
+                while (in.read(re) != -1) {
+                    result = result.append(new String(re));
+                }
+            }
+// 关闭输入流
+            if (in != null) {
+                in.close();
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return result.toString();
+    }
+
+    /**
+     * 执行 adb 命令
+     *
+     * @param cmd 命令
+     * @return
+     */
+    public static String shellExec(String cmd) {
+        Runtime mRuntime = Runtime.getRuntime(); //执行命令的方法
+        try {
+            //Process中封装了返回的结果和执行错误的结果
+            Process mProcess = mRuntime.exec(cmd); //加入参数
+            //使用BufferReader缓冲各个字符，实现高效读取
+            //InputStreamReader将执行命令后得到的字节流数据转化为字符流
+            //mProcess.getInputStream()获取命令执行后的的字节流结果
+            BufferedReader mReader = new BufferedReader(new InputStreamReader(mProcess.getInputStream()));
+            //实例化一个字符缓冲区
+            StringBuffer mRespBuff = new StringBuffer();
+            //实例化并初始化一个大小为1024的字符缓冲区，char类型
+            char[] buff = new char[1024];
+            int ch = 0;
+            //read()方法读取内容到buff缓冲区中，大小为buff的大小，返回一个整型值，即内容的长度
+            //如果长度不为null
+            while ((ch = mReader.read(buff)) != -1) {
+                //就将缓冲区buff的内容填进字符缓冲区
+                mRespBuff.append(buff, 0, ch);
+            }
+            //结束缓冲
+            mReader.close();
+            Log.i("shell", "shellExec: " + mRespBuff);
+            //弹出结果
+//            Log.i("shell", "执行命令: " + cmd + "执行成功");
+            return mRespBuff.toString();
+
+        } catch (IOException e) {
+            // 异常处理
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
     }
 }
