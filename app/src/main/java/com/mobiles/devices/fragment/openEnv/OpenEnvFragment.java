@@ -173,13 +173,17 @@ public class OpenEnvFragment extends BaseFragment<FragmentOpenEnvBinding> implem
             if(isChecked){
                // execRootCmd("injectprop  ro.debuggable 1");
               //  execRootCmd("stop;start;");
-                CommandExecution.execCommand("nohup /data/local/tmp/wan.sh &",true);
+                CommandExecution.execCommand("injectprop ro.debuggable 1",true);
+                CommandExecution.execCommand("setprop ctl.restart zygote_secondary",true);
                 /*String path=copyAssetGetFilePath("wan.sh");
                 CommandExecution.execCommand("chmod 777 "+path,true);
                 CommandExecution.execCommand("nohup "+path+" &",true);*/
                 //exe_cmd_str(str);
                 XToastUtils.success("ro.debug开启");
             }else {
+
+                CommandExecution.execCommand("injectprop ro.debuggable 1",true);
+                CommandExecution.execCommand("setprop ctl.restart zygote_secondary",true);
                 XToastUtils.error("ro.debug关闭");
             }
         });
