@@ -221,7 +221,7 @@ public class OpenEnvFragment extends BaseFragment<FragmentOpenEnvBinding> implem
                 CommandExecution.execCommand(str1,true);
                 XToastUtils.success("ro.debug开启");
             }else {
-                
+
                 XToastUtils.error("ro.debug关闭");
             }
         });
