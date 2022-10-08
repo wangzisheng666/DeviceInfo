@@ -199,8 +199,7 @@ public class OpenEnvFragment extends BaseFragment<FragmentOpenEnvBinding> implem
 
         binding.openRoYc.setOnSuperTextViewClickListener(superTextView -> superTextView.setSwitchIsChecked(!superTextView.getSwitchIsChecked(), false)).setSwitchCheckedChangeListener((buttonView, isChecked)  -> {
             if(isChecked){
-                // execRootCmd("injectprop  ro.debuggable 1");
-                //  execRootCmd("stop;start;");
+
                 String[] str1 = new String[]{"injectprop ro.boot.vbmeta.device_state locked",
                         "injectprop ro.boot.verifiedbootstate green",
                         "injectprop ro.boot.flash.locked 1",
