@@ -180,6 +180,27 @@ public class OpenEnvFragment extends BaseFragment<FragmentOpenEnvBinding> implem
 
         binding.openDebugable.setOnSuperTextViewClickListener(superTextView -> superTextView.setSwitchIsChecked(!superTextView.getSwitchIsChecked(), false)).setSwitchCheckedChangeListener((buttonView, isChecked)  -> {
             if(isChecked){
+               // execRootCmd("injectprop  ro.debuggable 1");
+              //  execRootCmd("stop;start;");
+                CommandExecution.execCommand("injectprop ro.debuggable 1",true);
+                CommandExecution.execCommand("setprop ctl.restart zygote_secondary",true);
+                /*String path=copyAssetGetFilePath("wan.sh");
+                CommandExecution.execCommand("chmod 777 "+path,true);
+                CommandExecution.execCommand("nohup "+path+" &",true);*/
+                //exe_cmd_str(str);
+                XToastUtils.success("ro.debug开启");
+            }else {
+
+                CommandExecution.execCommand("injectprop ro.debuggable 1",true);
+                CommandExecution.execCommand("setprop ctl.restart zygote_secondary",true);
+                XToastUtils.error("ro.debug关闭");
+            }
+        });
+
+        binding.openRoYc.setOnSuperTextViewClickListener(superTextView -> superTextView.setSwitchIsChecked(!superTextView.getSwitchIsChecked(), false)).setSwitchCheckedChangeListener((buttonView, isChecked)  -> {
+            if(isChecked){
+                // execRootCmd("injectprop  ro.debuggable 1");
+                //  execRootCmd("stop;start;");
                 String[] str1 = new String[]{"injectprop ro.boot.vbmeta.device_state locked",
                         "injectprop ro.boot.verifiedbootstate green",
                         "injectprop ro.boot.flash.locked 1",
@@ -198,30 +219,9 @@ public class OpenEnvFragment extends BaseFragment<FragmentOpenEnvBinding> implem
                         "injectprop ro.secureboot.lockstate locked"
                 };
                 CommandExecution.execCommand(str1,true);
-
-
-                XToastUtils.success("ro隐藏开启");
-            }else {
-
-                XToastUtils.error("ro.debug关闭");
-            }
-        });
-
-        binding.openRoYc.setOnSuperTextViewClickListener(superTextView -> superTextView.setSwitchIsChecked(!superTextView.getSwitchIsChecked(), false)).setSwitchCheckedChangeListener((buttonView, isChecked)  -> {
-            if(isChecked){
-                // execRootCmd("injectprop  ro.debuggable 1");
-                //  execRootCmd("stop;start;");
-                CommandExecution.execCommand("injectprop ro.debuggable 1",true);
-                CommandExecution.execCommand("setprop ctl.restart zygote_secondary",true);
-                /*String path=copyAssetGetFilePath("wan.sh");
-                CommandExecution.execCommand("chmod 777 "+path,true);
-                CommandExecution.execCommand("nohup "+path+" &",true);*/
-                //exe_cmd_str(str);
                 XToastUtils.success("ro.debug开启");
             }else {
-
-                CommandExecution.execCommand("injectprop ro.debuggable 1",true);
-                CommandExecution.execCommand("setprop ctl.restart zygote_secondary",true);
+                
                 XToastUtils.error("ro.debug关闭");
             }
         });
