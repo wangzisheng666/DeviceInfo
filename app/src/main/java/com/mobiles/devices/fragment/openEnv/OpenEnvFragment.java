@@ -20,6 +20,7 @@ package com.mobiles.devices.fragment.openEnv;
 import static com.mobiles.devices.utils.Utils.execRootCmd;
 
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -39,6 +40,7 @@ import com.xuexiang.xpage.annotation.Page;
 import com.xuexiang.xpage.enums.CoreAnim;
 import com.xuexiang.xui.widget.actionbar.TitleBar;
 import com.xuexiang.xui.widget.textview.supertextview.SuperTextView;
+import com.xuexiang.xui.widget.toast.XToast;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -57,6 +59,13 @@ public class OpenEnvFragment extends BaseFragment<FragmentOpenEnvBinding> implem
     String pid = null;
     public boolean isOpen =false;
 
+    @Override
+    protected void initArgs() {
+        super.initArgs();
+        XToast.Config.get()
+                //位置设置为居中
+                .setGravity(Gravity.CENTER);
+    }
     @NonNull
     @Override
     protected FragmentOpenEnvBinding viewBindingInflate(LayoutInflater inflater, ViewGroup container) {
@@ -171,8 +180,37 @@ public class OpenEnvFragment extends BaseFragment<FragmentOpenEnvBinding> implem
 
         binding.openDebugable.setOnSuperTextViewClickListener(superTextView -> superTextView.setSwitchIsChecked(!superTextView.getSwitchIsChecked(), false)).setSwitchCheckedChangeListener((buttonView, isChecked)  -> {
             if(isChecked){
-               // execRootCmd("injectprop  ro.debuggable 1");
-              //  execRootCmd("stop;start;");
+                String[] str1 = new String[]{"injectprop ro.boot.vbmeta.device_state locked",
+                        "injectprop ro.boot.verifiedbootstate green",
+                        "injectprop ro.boot.flash.locked 1",
+                        "injectprop ro.boot.veritymode enforcing",
+                        "injectprop ro.boot.warranty_bit 0",
+                        "injectprop ro.warranty_bit 0",
+                        "injectprop ro.debuggable 0",
+                        "injectprop ro.secure 1",
+                        "injectprop ro.adb.secure 1",
+                        "injectprop ro.build.type user",
+                        "injectprop ro.build.tags release-keys",
+                        "injectprop ro.vendor.boot.warranty_bit 0",
+                        "injectprop ro.vendor.warranty_bit 0",
+                        "injectprop vendor.boot.vbmeta.device_state locked",
+                        "injectprop vendor.boot.verifiedbootstate green",
+                        "injectprop ro.secureboot.lockstate locked"
+                };
+                CommandExecution.execCommand(str1,true);
+
+
+                XToastUtils.success("ro隐藏开启");
+            }else {
+
+                XToastUtils.error("ro.debug关闭");
+            }
+        });
+
+        binding.openRoYc.setOnSuperTextViewClickListener(superTextView -> superTextView.setSwitchIsChecked(!superTextView.getSwitchIsChecked(), false)).setSwitchCheckedChangeListener((buttonView, isChecked)  -> {
+            if(isChecked){
+                // execRootCmd("injectprop  ro.debuggable 1");
+                //  execRootCmd("stop;start;");
                 CommandExecution.execCommand("injectprop ro.debuggable 1",true);
                 CommandExecution.execCommand("setprop ctl.restart zygote_secondary",true);
                 /*String path=copyAssetGetFilePath("wan.sh");

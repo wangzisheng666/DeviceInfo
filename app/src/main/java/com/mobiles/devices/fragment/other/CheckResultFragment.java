@@ -19,6 +19,7 @@ package com.mobiles.devices.fragment.other;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -31,6 +32,7 @@ import com.mobiles.devices.utils.TokenUtils;
 import com.mobiles.devices.utils.XToastUtils;
 import com.xuexiang.xaop.annotation.SingleClick;
 import com.xuexiang.xpage.annotation.Page;
+import com.xuexiang.xui.widget.actionbar.TitleBar;
 import com.xuexiang.xui.widget.dialog.DialogLoader;
 import com.xuexiang.xui.widget.textview.supertextview.SuperTextView;
 import com.xuexiang.xutil.XUtil;
@@ -54,6 +56,15 @@ public class CheckResultFragment extends BaseFragment<FragmentCheckResultBinding
 
     }
 
+    /**
+     * @return 返回为 null意为不需要导航栏
+     */
+    @Override
+    protected TitleBar initTitle() {
+        return null;
+    }
+
+
     @NonNull
     @Override
     protected FragmentCheckResultBinding viewBindingInflate(LayoutInflater inflater, ViewGroup container) {
@@ -64,6 +75,13 @@ public class CheckResultFragment extends BaseFragment<FragmentCheckResultBinding
     protected void initViews() {
         binding.checkResultTest.setOnSuperTextViewClickListener(this);
 
+        binding.checkToolbar.setLeftClickListener(v -> XToastUtils.toast("点击返回"))
+                .addAction(new TitleBar.TextAction("更多") {
+                    @Override
+                    public void performAction(View view) {
+                        XToastUtils.toast("点击更多！");
+                    }
+                });
     }
 
     @SingleClick

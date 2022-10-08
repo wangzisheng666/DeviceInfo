@@ -21,6 +21,26 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:elevation="0dp">
+
+
+        <com.xuexiang.xui.widget.actionbar.TitleBar
+            android:id="@+id/check_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            app:tb_leftImageResource="@drawable/icon_back_white"
+            app:tb_leftText="返回"
+            app:tb_titleText="这是一个Title"
+            app:tb_useThemeColor="false"
+            android:background="@color/colorPrimary"/>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
     <com.scwang.smartrefresh.layout.SmartRefreshLayout style="@style/PullDownStyle">
 
         <androidx.core.widget.NestedScrollView style="@style/ScrollViewStyle">
