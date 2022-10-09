@@ -28,6 +28,7 @@ import com.mobiles.devices.databinding.FragmentEnvironmentalTestingBinding;
 import com.mobiles.devices.fragment.other.CheckResultFragment;
 import com.mobiles.devices.fuction.Build_device_info;
 import com.mobiles.devices.fuction.check_SElinux;
+import com.mobiles.devices.fuction.check_adb;
 import com.mobiles.devices.fuction.check_root;
 import com.mobiles.devices.utils.XToastUtils;
 import com.xuexiang.xpage.annotation.Page;
@@ -65,6 +66,7 @@ public class EnvironmentalTestingFragment extends BaseFragment<FragmentEnvironme
         Build_device_info.showSystemParameter();
         check_root.showSystemParameter();
         check_SElinux.SElinux();
+        //check_adb.chenk_all();
 
     }
 
