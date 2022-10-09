@@ -19,6 +19,7 @@ package com.mobiles.devices.fragment.openEnv;
 
 import static com.mobiles.devices.utils.Utils.execRootCmd;
 
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -111,6 +112,7 @@ public class OpenEnvFragment extends BaseFragment<FragmentOpenEnvBinding> implem
                     Log.i("TAG",pid+"result1.result = " + result);
                     XToastUtils.success("frida开启成功");
                     isOpen = true;
+
                 }else {
                     binding.openFridaBig.setSwitchIsChecked(false);
                     String[] str1 = new String[]{"kill  "+ pid };
@@ -121,6 +123,7 @@ public class OpenEnvFragment extends BaseFragment<FragmentOpenEnvBinding> implem
                     String result =  execRootCmd("ps -e |grep myfs1");
                     pid = StringUtils.substringBetween(result, "root", " 1 ");
                     XToastUtils.success("frida开启成功");
+
                 }
 
        /*         ShellUtils.CommandResult result = ShellUtils.execCommand("myfs1",true);  //主要是这条语句，字符串中是命令
@@ -143,6 +146,8 @@ public class OpenEnvFragment extends BaseFragment<FragmentOpenEnvBinding> implem
                 CommandExecution.execCommand(str1,true);
                 XToastUtils.error("frida关闭");
                 isOpen = false;
+                //删除敏感文件防止检测
+                execRootCmd("rm -rf /data/local/tmp/re.frida.server");
             }
         });
 
