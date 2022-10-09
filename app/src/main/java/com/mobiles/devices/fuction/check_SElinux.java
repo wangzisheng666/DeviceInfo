@@ -32,7 +32,7 @@ public class check_SElinux {
 
     public static String SElinux() {
 
-        String a2 = Shell_Util.shell("getenforce");
+        String a2 = String.valueOf(Shell_Util.shellExec("getenforce"));
         if (TextUtils.equals(a2,"Enforcing")){
             Log.i(TAG, "SElinux: 正常"+a2);
             return "SElinux 正常";
