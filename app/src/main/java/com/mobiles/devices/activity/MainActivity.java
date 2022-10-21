@@ -70,6 +70,13 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements V
         initData();
 
         initListeners();
+
+     /*   SignCheck signCheck = new SignCheck(this,"27:19:6E:38:6B:87:5E:76:AD:F7:00:E7:EA:84:E4:C6:EE:E3:3D:FA");
+        if(signCheck.check()) {
+            //TODO 签名正确
+        }else                {
+            //TODO 签名错误
+        }*/
     }
 
 

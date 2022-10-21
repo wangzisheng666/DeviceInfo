@@ -183,6 +183,7 @@ public class OpenEnvFragment extends BaseFragment<FragmentOpenEnvBinding> implem
             }
         });
 
+        binding.openDebugable.setSwitchIsChecked(isOpen_rodebug());
         binding.openDebugable.setOnSuperTextViewClickListener(superTextView -> superTextView.setSwitchIsChecked(!superTextView.getSwitchIsChecked(), false)).setSwitchCheckedChangeListener((buttonView, isChecked)  -> {
             if(isChecked){
                // execRootCmd("injectprop  ro.debuggable 1");
@@ -196,12 +197,23 @@ public class OpenEnvFragment extends BaseFragment<FragmentOpenEnvBinding> implem
                 XToastUtils.success("ro.debug开启");
             }else {
 
-                CommandExecution.execCommand("injectprop ro.debuggable 1",true);
-                CommandExecution.execCommand("setprop ctl.restart zygote_secondary",true);
+               // CommandExecution.execCommand("injectprop ro.debuggable 0",true);
+                //CommandExecution.execCommand("setprop ctl.restart zygote_secondary",true);
+                String[] str1 = new String[]{"injectprop ro.debuggable 0",
+                       // "setprop ctl.restart zygote_secondary",
+                        "setprop ctl.restart zygote",
+                      //  "setorop ctl.restart netd"
+
+                };
+                CommandExecution.execCommand(str1,true);
                 XToastUtils.error("ro.debug关闭");
+
             }
         });
 
+
+
+        binding.openRoYc.setSwitchIsChecked(isOpen_ro());
         binding.openRoYc.setOnSuperTextViewClickListener(superTextView -> superTextView.setSwitchIsChecked(!superTextView.getSwitchIsChecked(), false)).setSwitchCheckedChangeListener((buttonView, isChecked)  -> {
             if(isChecked){
 
@@ -295,5 +307,24 @@ public class OpenEnvFragment extends BaseFragment<FragmentOpenEnvBinding> implem
             e.printStackTrace();
         }
         return null;
+    }
+
+
+    private boolean isOpen_ro(){
+        String[] strIf = new String[]{"getprop ro.boot.flash.locked"};
+        CommandExecution.CommandResult result= CommandExecution.execCommand(strIf,true);
+        String aa =  result.successMsg;
+        if(aa.equals("0")){
+            return false;
+        }else return aa.equals("1");
+    }
+
+    private boolean isOpen_rodebug(){
+        String[] strIf = new String[]{" getprop ro.debuggable "};
+        CommandExecution.CommandResult result= CommandExecution.execCommand(strIf,true);
+        String aa =  result.successMsg;
+        if(aa.equals("0")){
+            return false;
+        }else return aa.equals("1");
     }
 }
