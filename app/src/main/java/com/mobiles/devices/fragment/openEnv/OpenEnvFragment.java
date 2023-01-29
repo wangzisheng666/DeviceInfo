@@ -183,7 +183,7 @@ public class OpenEnvFragment extends BaseFragment<FragmentOpenEnvBinding> implem
             }
         });
 
-        binding.openDebugable.setSwitchIsChecked(isOpen_rodebug());
+       // binding.openDebugable.setSwitchIsChecked(isOpen_rodebug());
         binding.openDebugable.setOnSuperTextViewClickListener(superTextView -> superTextView.setSwitchIsChecked(!superTextView.getSwitchIsChecked(), false)).setSwitchCheckedChangeListener((buttonView, isChecked)  -> {
             if(isChecked){
                // execRootCmd("injectprop  ro.debuggable 1");
@@ -213,7 +213,7 @@ public class OpenEnvFragment extends BaseFragment<FragmentOpenEnvBinding> implem
 
 
 
-        binding.openRoYc.setSwitchIsChecked(isOpen_ro());
+       // binding.openRoYc.setSwitchIsChecked(isOpen_ro());
         binding.openRoYc.setOnSuperTextViewClickListener(superTextView -> superTextView.setSwitchIsChecked(!superTextView.getSwitchIsChecked(), false)).setSwitchCheckedChangeListener((buttonView, isChecked)  -> {
             if(isChecked){
 

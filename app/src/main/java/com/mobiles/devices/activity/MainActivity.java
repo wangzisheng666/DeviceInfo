@@ -18,6 +18,7 @@
 package com.mobiles.devices.activity;
 
 import android.os.Bundle;
+import android.os.RemoteException;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -36,6 +37,7 @@ import com.mobiles.devices.fragment.environmental.EnvironmentalTestingFragment;
 import com.mobiles.devices.fragment.openEnv.OpenEnvFragment;
 import com.mobiles.devices.core.BaseActivity;
 import com.mobiles.devices.fragment.other.AboutFragment;
+import com.mobiles.devices.utils.ServiceUtils;
 import com.mobiles.devices.utils.XToastUtils;
 import com.mobiles.devices.widget.GuideTipsDialog;
 import com.xuexiang.xaop.annotation.SingleClick;
@@ -70,13 +72,14 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements V
         initData();
 
         initListeners();
+        try {
+            ServiceUtils.getiMikRom().writeFile("/data/system/IDevice_conf","123456789");
+            ServiceUtils.getiMikRom().shellExec("setprop ctl.restart zygote_secondary");
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
 
-     /*   SignCheck signCheck = new SignCheck(this,"27:19:6E:38:6B:87:5E:76:AD:F7:00:E7:EA:84:E4:C6:EE:E3:3D:FA");
-        if(signCheck.check()) {
-            //TODO 签名正确
-        }else                {
-            //TODO 签名错误
-        }*/
+
     }
 
 
@@ -203,6 +206,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements V
     public void onExit() {
         XUtil.exitApp();
     }
+
+
 
 
 }
