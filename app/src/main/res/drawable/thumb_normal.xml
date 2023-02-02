@@ -3,9 +3,9 @@
     android:shape="rectangle" >
 
     <!-- 高度40 -->
-    <size android:height="20dp" android:width="20dp"/>
+    <size android:height="10dp" android:width="10dp"/>
     <!-- 圆角弧度 20 -->
-    <corners android:radius="10dp"/>
+    <corners android:radius="5dp"/>
 
 
     <!-- 变化率 -->

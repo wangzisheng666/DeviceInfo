@@ -19,11 +19,12 @@ package com.mobiles.devices.activity;
 
 import android.os.Bundle;
 import android.os.RemoteException;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-
+import android.os.Build;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
@@ -67,17 +68,35 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements V
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+       String aa = Build.ID;
+        Log.i("33333",aa);
+// getprop ro.build.id
+      /*  try {
+           // ServiceUtils.getiMikRom().shellExec("injectprop  ro.build.id 2039");
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }*/
         initViews();
 
         initData();
 
         initListeners();
-        try {
-            ServiceUtils.getiMikRom().writeFile("/data/system/IDevice_conf","123456789");
-            ServiceUtils.getiMikRom().shellExec("setprop ctl.restart zygote_secondary");
+    /*    try {
+            ServiceUtils.getiMikRom().writeFile("/data/system/IDevice_conf","{\n" +
+                    "    \"language\":[\n" +
+                    "        {\"id\":1, \"tools\":\"XCode111111\", \"name\":\"Swift\"},\n" +
+                    "        {\"id\":2, \"tools\":\"Eclipse\", \"name\":\"Java\"},\n" +
+                    "        {\"id\":3, \"tools\":\"Visual Studio\", \"name\":\"C#\"}\n" +
+                    "    ],\n" +
+                    "    \"manufacturer\":\"manufacturer\",\n" +
+                    "    \"ro.build.id\":\"testcxf33333\",\n" +
+                    "    \"ro.product.name\":\"test_cxf333\"\n" +
+                    "}");
+
+           // ServiceUtils.getiMikRom().shellExec("setprop ctl.restart zygote_secondary");
         } catch (RemoteException e) {
             e.printStackTrace();
-        }
+        }*/
 
 
     }
