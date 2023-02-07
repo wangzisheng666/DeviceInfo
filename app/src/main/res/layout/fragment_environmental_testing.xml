@@ -21,53 +21,88 @@
     android:background="?attr/xui_config_color_background"
     android:orientation="vertical">
 
-    <com.scwang.smartrefresh.layout.SmartRefreshLayout style="@style/PullDownStyle">
+    <ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:scrollbars="vertical"
+        android:background="#e3e2e7"
+        android:fadingEdge="vertical">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#e3e2e7"
+            >
 
-        <androidx.core.widget.NestedScrollView style="@style/ScrollViewStyle">
+
+            <com.mobiles.devices.fragment.settings.CornerListView
+                android:id="@+id/setting_list"
+                android:layout_width="fill_parent"
+                android:layout_height="195dp"
+                android:layout_margin="10dip"
+                android:background="@drawable/shape_bg_listview"
+                android:dividerHeight="1px"
+                android:divider="#cccccc"
+                android:scrollbars="none"
+                android:cacheColorHint="#00000000" />
+
+            <com.mobiles.devices.fragment.settings.CornerListView
+                android:id="@+id/setting_list2"
+                android:layout_width="fill_parent"
+                android:layout_height="78dp"
+                android:layout_marginTop="30dp"
+                android:layout_margin="10dip"
+                android:background="@drawable/shape_bg_listview"
+                android:dividerHeight="1px"
+                android:divider="#cccccc"
+                android:scrollbars="none"
+                android:cacheColorHint="#00000000" />
+
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:paddingTop="20dp">
+                android:gravity="center"
+                >
+                <com.xuexiang.xui.widget.shadow.ShadowTextView
+                    android:id="@+id/page1_button_bianji"
+                    android:layout_width="200dp"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:paddingEnd="5dp"
+                    android:paddingBottom="5dp"
+                    android:text="变机"
+                    android:textColor="@color/xui_config_color_white"
+                    app:sd_bgColor="?attr/colorAccent"
+                    app:sd_offsetX="5dp"
+                    app:sd_offsetY="5dp"
+                    app:sd_shadowRadius="5dp"
+                    app:sd_shapeRadius="5dp" />
 
-                <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
-                    android:id="@+id/env_root"
-                    style="@style/InfoItem.Account"
-                    app:sLeftTextString="root" />
-
-                <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
-                    android:id="@+id/env_adb"
-                    style="@style/InfoItem.Account"
-                    app:sLeftTextString="adb" />
-
-                <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
-                    android:id="@+id/env_frida"
-                    style="@style/InfoItem.Account"
-                    app:sDividerLineType="none"
-                    app:sLeftTextString="frida" />
+                <TextView
+                    android:id="@+id/page1_button_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="460dp"
+                    android:scrollbars="vertical"
+                    android:singleLine="false"
+                    android:text="content"
+                    android:padding="10dp"
+                    android:fadeScrollbars="false"
+                    android:scrollbarThumbVertical="@drawable/text_scroll"
+                    android:textSize="14sp" />
 
 
-                <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
-                    style="@style/InfoItem.Account"
-                    android:layout_marginTop="20dp"
-                    app:sDividerLineType="none"
-                    app:sLeftTextString="44" />
 
-                <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
-                    android:id="@+id/env_settings"
-                    style="@style/InfoItem.Account"
-                    android:layout_marginTop="20dp"
-                    app:sLeftTextString="55" />
 
-                <com.xuexiang.xui.widget.textview.supertextview.SuperTextView
-                    android:id="@+id/env_about"
-                    style="@style/InfoItem.Account"
-                    app:sDividerLineType="none"
-                    app:sLeftTextString="66" />
 
             </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
-    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+        </LinearLayout>
+
+
+    </ScrollView>
+
+
 
 </LinearLayout>

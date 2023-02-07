@@ -20,6 +20,10 @@ package com.mobiles.devices.fragment.openEnv;
 import static com.mobiles.devices.utils.Utils.execRootCmd;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Handler;
@@ -35,7 +39,12 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -49,6 +58,7 @@ import com.mobiles.devices.adapter.entity.buildInfo;
 import com.mobiles.devices.adapter.entity.deviceIfo;
 import com.mobiles.devices.core.BaseFragment;
 import com.mobiles.devices.databinding.FragmentOpenEnvBinding;
+import com.mobiles.devices.fragment.environmental.AppInfo;
 import com.mobiles.devices.fragment.other.AboutFragment;
 import com.mobiles.devices.fragment.other.SettingsFragment;
 import com.mobiles.devices.fragment.settings.CornerListView;
@@ -68,15 +78,18 @@ import com.xuexiang.xui.widget.shadow.ShadowTextView;
 import com.xuexiang.xui.widget.textview.supertextview.SuperTextView;
 import com.xuexiang.xui.widget.toast.XToast;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
+import java.util.concurrent.CopyOnWriteArrayList;
 
 
 /**
@@ -87,8 +100,7 @@ import java.util.Map;
 public class OpenEnvFragment extends BaseFragment<FragmentOpenEnvBinding> implements SuperTextView.OnSuperTextViewClickListener {
     String pid = null;
     public boolean isOpen =false;
-    TextView textView;
-
+    TextView textView_app ;
     @Override
     protected void initArgs() {
         super.initArgs();
@@ -109,49 +121,59 @@ public class OpenEnvFragment extends BaseFragment<FragmentOpenEnvBinding> implem
     protected TitleBar initTitle() {
         return null;
     }
+    Spinner mSpinnerFitOffset;
+    private ArrayAdapter<String> groupScene_adapter;
+
 
     /**
      * 初始化控件
      */
     @Override
     protected void initViews() {
-
-        SetingOne();
-        SetingTwo();
+        Spinner groupScene;
 
 
-        textView=findViewById(R.id.page1_button_text);
-        textView.setOnTouchListener(new View.OnTouchListener() {
+
+        groupScene = findViewById(R.id.spinner_system_fit_offset);
+        textView_app = findViewById(R.id.app);
+
+        List<String> list_app =  new ArrayList<>();
+// 建立数据源
+
+// 建立Adapter并且绑定数据源
+        groupScene_adapter =new ArrayAdapter<String>(getContext(),android.R.layout.simple_spinner_item,  getAllAppInfo(getActivity(), true)
+        );
+        //设置下拉列表的风格,simple_spinner_dropdown_item是android系统自带的样式，等会自定义修改
+        //将可选内容与ArrayAdapter连接起来，simple_spinner_item是android系统自带样式groupScene_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//绑定 Adapter到控件
+        groupScene.setAdapter(groupScene_adapter);
+        //添加事件Spinner事件监听
+        groupScene.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                // TODO Auto-generated method stub
-                if(event.getAction()==MotionEvent.ACTION_DOWN){
-                    //通知父控件不要干扰
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                }
-                if(event.getAction()==MotionEvent.ACTION_MOVE){
-                    //通知父控件不要干扰
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                }
-                if(event.getAction()==MotionEvent.ACTION_UP){
-                    v.getParent().requestDisallowInterceptTouchEvent(false);
-                }
-                return false;
+            public void onItemSelected(AdapterView<?> parent, View view,
+                                       int pos, long id) {
+                String f = groupScene.getSelectedItem().toString();
+               // Toast.makeText(getContext(), "点击:" + pos + "id " + id + "选中值== " + f , Toast.LENGTH_SHORT).show();
+
+                list_app.add(f);
+                list_app.contains("选择应用");
+
+                remove(list_app, "选择应用");
+                textView_app.setText(StringUtils.join(list_app,","));
             }
-        });
-        textView.setMovementMethod(ScrollingMovementMethod.getInstance());
-        findViewById(R.id.page1_button_bianji).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                getString();
-
-
-
-
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Another interface callback
             }
         });
 
     }
+
+
+
+
+
+
 
     @Override
     protected void initListeners() {
@@ -319,309 +341,47 @@ public class OpenEnvFragment extends BaseFragment<FragmentOpenEnvBinding> implem
             openNewPage(AboutFragment.class);
         }*/
     }
-    public static final int UPDATE_TEXT=1;
-    private static String string;
-    @SuppressLint("HandlerLeak")
-    private Handler handler=new Handler(Looper.myLooper()){
-        @Override
-        public void handleMessage(@NonNull Message msg) {
-            if(msg.what==UPDATE_TEXT){
-               // tvContent.setText(string);
-                textView.setText(string);
-
-               JSONObject  jsonObject = new JSONObject(JSON.parseObject(string));
-
-                JSONObject js =jsonObject.getJSONObject("buildInfo");
-                String str = js.toString();
-
-                Map mapsRe = (Map)JSON.parse(str);
-
-
-                Map<String,String> map_tj=new HashMap<>();
-                map_tj.put("board", "ro.product.board");
-                Log.i("buildInfo_BOARD",Build.BOARD);
-                map_tj.put("bootloader", "ro.bootloader");
-                Log.i("buildInfo_BOOTLOADER",Build.BOOTLOADER);
-                map_tj.put("brand", "ro.product.brand");
-                Log.i("buildInfo_BRAND",Build.BRAND);
-                map_tj.put("device", "ro.product.device");
-                Log.i("buildInfo_BRAND",Build.DEVICE);
-                map_tj.put("display", "ro.build.display.id");
-                Log.i("buildInfo_DISPLAY",Build.DISPLAY);
-                map_tj.put("increment", "ro.build.version.incremental");
-                Log.i("buildInfo_VERSION.INCREMENTAL",Build.VERSION.INCREMENTAL);
-                map_tj.put("fingerPrint", "ro.build.fingerprint");
-                /*ro.bootimage.build.fingerprint]: [google/coral/coral:13/TP1A.221005.002/9012097:user/release-keys]
-[ro.build.fingerprint]: [google/coral/coral:13/TP1A.221005.002/9012097:user/release-keys]
-[ro.build.version.preview_sdk_fingerprint]: [REL]
-[ro.odm.build.fingerprint]: [google/coral/coral:13/TP1A.221005.002/9012097:user/release-keys]
-[ro.product.build.fingerprint]: [google/coral/coral:13/TP1A.221005.002/9012097:user/release-keys]
-[ro.system.build.fingerprint]: [google/coral/coral:13/TP1A.221005.002/9012097:user/release-keys]
-[ro.system_ext.build.fingerprint]: [google/coral/coral:13/TP1A.221005.002/9012097:user/release-keys]
-[ro.vendor.build.fingerprint]: [google/coral/coral:13/TP1A.221005.002/9012097:user/release-keys]
-[ro.vendor_dlkm.build.fingerprint]: [google/coral/coral:13/TP1A.221005.002/9012097:user/release-keys]
-*/
-                Log.i("buildInfo_FINGERPRINT",Build.FINGERPRINT);
-                map_tj.put("hardWare", "ro.hardware");
-                Log.i("buildInfo_HARDWARE",Build.HARDWARE);
-                map_tj.put("host", "ro.build.host");
-                Log.i("buildInfo_HOST",Build.HOST);
-                map_tj.put("id", "ro.build.id");
-                Log.i("buildInfo_ID",Build.ID);
-                map_tj.put("manufacture", "ro.product.manufacturer");
-                Log.i("buildInfo_MANUFACTURER",Build.MANUFACTURER);
-                map_tj.put("serial", "no.such.thing");
-                Log.i("buildInfo_SERIAL",Build.SERIAL);
-                map_tj.put("product", "ro.product.name");
-                Log.i("buildInfo_PRODUCT",Build.PRODUCT);
-                map_tj.put("tags", "ro.build.tags");
-                Log.i("buildInfo_TAGS",Build.TAGS);
-                map_tj.put("time", "o.build.date.utc");
-                Log.i("buildInfo_",String.valueOf(Build.TIME));
-                map_tj.put("type", "ro.build.type");
-                Log.i("buildInfo_TYPE",Build.TYPE);
-                map_tj.put("user", "ro.build.user");
-                Log.i("buildInfo_",Build.USER);
-                map_tj.put("sdk", "ro.build.version.sdk");
-                Log.i("buildInfo_VERSION.SDK",Build.VERSION.SDK);
-                map_tj.put("sdkInit", "ro.build.version.sdk");
-                Log.i("buildInfo_",Build.VERSION.SDK);
-                map_tj.put("model", "ro.product.model");
-                Log.i("buildInfo_MODEL",Build.MODEL);
-
-                Map<String,String> map_new=new HashMap<>();
-
-                for (Object map_re : mapsRe.entrySet()){
-
-                    Log.i("map_re集合",((Map.Entry)map_re).getKey()+"     " + ((Map.Entry)map_re).getValue());
-
-                    for (Object map__tj : map_tj.entrySet()){
-
-                        Log.i("map__tj集合",((Map.Entry)map__tj).getKey()+"     " + ((Map.Entry)map__tj).getValue());
-
-                        if( ((Map.Entry)map_re).getKey().toString().equals(((Map.Entry)map__tj).getKey()) ){
-                            map_new.put(((Map.Entry)map__tj).getValue().toString(),((Map.Entry)map_re).getValue().toString());
-                            Log.i("map_new集合",((Map.Entry)map__tj).getValue().toString()+"     " + ((Map.Entry)map_re).getValue().toString());
-                            try {
-                                ServiceUtils.getiMikRom().shellExec("injectprop " + ((Map.Entry)map__tj).getValue().toString()+" " + ((Map.Entry)map_re).getValue().toString());
-                            } catch (RemoteException e) {
-                                e.printStackTrace();
-                            }
-                        }
-
-                    }
-                }
-
-                try {
-                    ServiceUtils.getiMikRom().shellExec("setprop ctl.restart zygote_secondary");
-                } catch (RemoteException e) {
-                    e.printStackTrace();
+    /**
+     * 获取手机已安装应用列表
+     * @param ctx
+     * @param isFilterSystem 是否过滤系统应用
+     * @return
+     */
+    public static ArrayList<String> getAllAppInfo(Context ctx, boolean isFilterSystem) {
+        ArrayList<String> appBeanList = new ArrayList<>();
+       // AppInfo bean = null;
+        appBeanList.add("选择应用");
+        PackageManager packageManager = ctx.getPackageManager();
+        List<PackageInfo> list = packageManager.getInstalledPackages(0);
+        for (PackageInfo p : list) {
+           // bean = new AppInfo();
+           // bean.setIcon(p.applicationInfo.loadIcon(packageManager));
+          //  bean.setLabel(packageManager.getApplicationLabel(p.applicationInfo).toString());
+          //  bean.setPackage_name(p.applicationInfo.packageName);
+            int flags = p.applicationInfo.flags;
+            // 判断是否是属于系统的apk
+            if ((flags & ApplicationInfo.FLAG_SYSTEM) != 0&&isFilterSystem) {
+//                bean.setSystem(true);
+            } else {
+                String aa = packageManager.getApplicationLabel(p.applicationInfo).toString();
+                if(!aa.contains(".")){
+                    appBeanList.add(aa);
                 }
             }
-            super.handleMessage(msg);
         }
-    };
-
-
-   private void getString(){
-       XHttp.get("/v2/api/fakeinfo?country=JP")
-               .syncRequest(false) //异步请求
-               .onMainThread(true) //回到主线程
-               .execute(new SimpleCallBack<String>() {
-                   @Override
-                   public void onSuccess(String response) throws Throwable {
-
-                       String Decryption_base= new String(Base64.decode(response.getBytes(), Base64.DEFAULT));
-
-                       String bb ="{\"ua\":\"Mozilla/5.0 (Linux; Android 10; Reno) AppleWebKit/ 537.36 (KHTML, like Gecko) Chrome/90.0.4430.91 Mobile Safari/537.36\",\"javaUa\":\"Dalvik/2.1.0 (Linux; U; Android 10; Reno Build/CFMG.202143.065)\",\"imei\":\"860005483227623\",\"imsi\":\"860005485645681\",\"mac\":\"B1:DE:6B:8F:89:05\",\"bssid\":\"37:DB:63:D2:B4:A8\",\"ssid\":\"W35LlyN\",\"phone\":\"+819066031821\",\"phoneStatus\":\"1\",\"phoneType\":1,\"width\":\"720\",\"height\":\"1560\",\"densityDpi\":340,\"xdpi\":\"343.628\",\"ydpi\":\"343.628\",\"carrier\":\"NTT\",\"mcc\":\"440\",\"mnc\":\"10\",\"carrierCode\":\"44010\",\"countryCode\":\"JP\",\"latitude\":\"33.488185\",\"longitude\":\"134.396803\",\"simSerial\":\"89810495833779614901\",\"simStatus\":\"5\",\"androidId\":\"cf9715e520d96c2b\",\"androidSerial\":\"9187E2181E952E\",\"ip\":\"\",\"diskSize\":\"13648998\",\"networkType\":\"0\",\"networkTypeName\":\"MOBILE\",\"networkSubType\":13,\"networkSubTypeName\":\"LTE\",\"blueTooth\":\"94:56:F5:A6:53:56\",\"email\":\"OS3tf@gmail.com\",\"Sensors\":{\"ACCELEROMETER\":{\"NAME\":\"AK09918-pseudo-gyro\",\"VENDOR\":\"MTK\"},\"GYROSCOPE\":{\"NAME\":\"lsm6dsm\",\"VENDOR\":\"lsm6dsm_acc\"}},\"buildInfo\":{\"board\":\"coral\",\"bootloader\":\"c2f2-0.4-8048765\",\"brand\":\"google\",\"cpu_abi\":\"arm64-v8a\",\"cpu_abi2\":\"arm64-v8a\",\"cpu_abilist\":\"arm64-v8a,armeabi-v7a,armeabi\",\"device\":\"coral\",\"display\":\"TD1A.221105.001\",\"radioVersion\":\"YXMS0-00060-2014770638\",\"increment\":\"1673581186\",\"fingerPrint\":\"Oppo/PCAM00/PCAM00:10/74ELYT-660.6153.24/1899793:user/release-keys\",\"hardWare\":\"coral\",\"host\":\"cxf-System\",\"id\":\"TD1A.221105.001\",\"manufacture\":\"Google\",\"serial\":\"9187E2181E952E\",\"product\":\"coral\",\"tags\":\"release-keys\",\"time\":1595651339149,\"type\":\"user\",\"user\":\"cxf\",\"sdk\":\"33\",\"sdkInit\":\"33\",\"model\":\"Pixel 4 XL\",\"osName\":\"13\",\"osArch\":\"armv7l\",\"osVersion\":\"13\",\"androidVersion\":\"13\",\"SECURITY_PATCH\":\"2022-11-05\"}}";
-
-                       String aa = "{\n" +
-                               "  \"ua\": \"Mozilla/5.0 (Linux; Android 11; Zenfone 7) AppleWebKit/ 537.36 (KHTML, like Gecko) Chrome/90.0.4430.66 Mobile Safari/537.36\",\n" +
-                               "  \"javaUa\": \"Dalvik/2.1.0 (Linux; U; Android 11; Zenfone 7 Build/5PAS.201871.032)\",\n" +
-                               "  \"imei\": \"866872080788958\",\n" +
-                               "  \"imsi\": \"866872081834502\",\n" +
-                               "  \"mac\": \"4D:B0:24:19:2F:4D\",\n" +
-                               "  \"bssid\": \"D9:35:F3:84:9D:6D\",\n" +
-                               "  \"ssid\": \"wmnFFLzjZ\",\n" +
-                               "  \"phone\": \"+81805530610\",\n" +
-                               "  \"phoneStatus\": \"1\",\n" +
-                               "  \"phoneType\": 1,\n" +
-                               "  \"width\": \"1080\",\n" +
-                               "  \"height\": \"2340\",\n" +
-                               "  \"densityDpi\": 560,\n" +
-                               "  \"xdpi\": \"515.442\",\n" +
-                               "  \"ydpi\": \"515.442\",\n" +
-                               "  \"carrier\": \"KDDI\",\n" +
-                               "  \"mcc\": \"440\",\n" +
-                               "  \"mnc\": \"73\",\n" +
-                               "  \"carrierCode\": \"44073\",\n" +
-                               "  \"countryCode\": \"JP\",\n" +
-                               "  \"latitude\": \"30.320331\",\n" +
-                               "  \"longitude\": \"126.315645\",\n" +
-                               "  \"simSerial\": \"89810288185159523082\",\n" +
-                               "  \"simStatus\": \"5\",\n" +
-                               "  \"androidId\": \"cd52db4611f5181b\",\n" +
-                               "  \"androidSerial\": \"53F989CC\",\n" +
-                               "  \"ip\": \"\",\n" +
-                               "  \"diskSize\": \"3047200\",\n" +
-                               "  \"networkType\": \"0\",\n" +
-                               "  \"networkTypeName\": \"MOBILE\",\n" +
-                               "  \"networkSubType\": 14,\n" +
-                               "  \"networkSubTypeName\": \"WCDMA\",\n" +
-                               "  \"blueTooth\": \"E2:17:B0:35:E2:1E\",\n" +
-                               "  \"email\": \"kwBJS4@gmail.com\",\n" +
-                               "  \"Sensors\": {\n" +
-                               "    \"ACCELEROMETER\": {\n" +
-                               "      \"NAME\": \"icm4x6xx\",\n" +
-                               "      \"VENDOR\": \"MTK\"\n" +
-                               "    },\n" +
-                               "    \"GYROSCOPE\": {\n" +
-                               "      \"NAME\": \"st-lis3dh\",\n" +
-                               "      \"VENDOR\": \"ST\"\n" +
-                               "    }\n" +
-                               "  },\n" +
-                               "  \"buildInfo\": {\n" +
-                               "   \"board\": \"X662, X662B, X689F\",\n" +
-                               "    \"bootloader\": \"06HWF-399.1920.85\",\n" +
-                               "    \"brand\": \"Infinix\",\n" +
-                               "    \"cpu_abi\": \"arm64-v8a\",\n" +
-                               "    \"cpu_abi2\": \"arm64-v8a\",\n" +
-                               "    \"cpu_abilist\": \"arm64-v8a,armeabi-v7a,armeabi\",\n" +
-                               "    \"device\": \"X662\",\n" +
-                               "    \"display\": \"W7BM.202016.098\",\n" +
-                               "    \"radioVersion\": \"1K49Q-00040-2018577763\",\n" +
-                               "    \"increment\": \"1121674\",\n" +
-                               "    \"fingerPrint\": \"Infinix/X662/X662:11/06HWF-399.1920.85/1121674:user/release-keys\",\n" +
-                               "    \"hardWare\": \"Infinix\",\n" +
-                               "    \"host\": \"FA22C-98377\",\n" +
-                               "    \"id\": \"W7BM.202016.098\",\n" +
-                               "    \"manufacture\": \"Infinix\",\n" +
-                               "    \"serial\": \"23168E09\",\n" +
-                               "    \"product\": \"Hot 11\",\n" +
-                               "    \"tags\": \"release-keys\",\n" +
-                               "    \"time\": 1617337885293,\n" +
-                               "    \"type\": \"user\",\n" +
-                               "    \"user\": \"builder\",\n" +
-                               "    \"sdk\": \"30\",\n" +
-                               "    \"sdkInit\": \"33\",\n" +
-                               "    \"model\": \"Zenfone 7\",\n" +
-                               "    \"osName\": \"11\",\n" +
-                               "    \"osArch\": \"armv7l\",\n" +
-                               "    \"osVersion\": \"11\",\n" +
-                               "    \"androidVersion\": \"11\",\n" +
-                               "    \"SECURITY_PATCH\": \"2020-12-28\"\n" +
-                               "  }\n" +
-                               "}";
-
-                       Log.i("解密数据", Decryption_base);
-                       ServiceUtils.getiMikRom().writeFile("/data/system/IDevice_conf",Decryption_base);
-                       string= Decryption_base;
-                       Message message=new Message();
-                       message.what=UPDATE_TEXT;
-                       handler.sendMessage(message);
-
-
-
-               /*        String jsonStr = Decryption_base;
-                       JSONObject jsonObject;
-                       List<buildInfo> buildInfoList = new ArrayList<>();
-                       try{
-                           jsonObject = new JSONObject(JSON.parseObject(jsonStr));
-
-                           JSONObject js =jsonObject.getJSONObject("buildInfo");
-                           String a = js.getString("board");
-
-
-                          *//* deviceIfo tagInfo = JSONObject.toJavaObject(jsonObject,deviceIfo.class);
-                           buildInfoList = JSONObject.parseArray(tagInfo.getBuildInfos().toString(), buildInfo.class);
-
-                           deviceIfo deviceIfo =  JSON.parseObject(jsonStr, deviceIfo.class);
-                           deviceIfo.buildInfos = deviceIfo.getBuildInfos();
-                           Log.i("11111",buildInfoList.toString());*//*
-
-                           //List<buildInfo> aa = tagInfo.getBuildInfos();
-                           //t 方法1
-                           // Log.i("11111",a);
-                       } catch (JSONException e) {
-                           throw new RuntimeException(e.getMessage(), e);
-                       }*/
-                   }
-                   @Override
-                   public void onError(ApiException e) {
-                       Log.i("11",e.getDisplayMessage());
-                   }
-               });
-
-   }
-
-
-    private void SetingOne()
-    {
-        CornerListView cornerListView = findViewById(R.id.setting_list);
-        ArrayList<ListItem> mList = setListDataOne();
-        // ��ȡMainListAdapter����
-        MainListViewAdapter adapter = new MainListViewAdapter(getActivity().getApplicationContext(),mList);
-
-        // ��MainListAdapter���󴫵ݸ�ListView��ͼ
-        cornerListView.setAdapter(adapter);
+        return appBeanList;
     }
 
-    private void SetingTwo()
-    {
-        CornerListView cornerListView2 = findViewById(R.id.setting_list2);
-        ArrayList<ListItem> mList = setListDataTwo();
-        MainListViewAdapter adapter = new MainListViewAdapter(getActivity().getApplicationContext(),mList);
-        cornerListView2.setAdapter(adapter);
+    public static void remove(List<String> list, String target){
+        Iterator<String> iter = list.iterator();
+        while (iter.hasNext()) {
+            String item = iter.next();
+            if (item.equals(target)) {
+                iter.remove();
+            }
+        }
     }
 
-    /**
-     * �����б�����
-     */
-    private ArrayList<ListItem>  setListDataOne(){
 
-        ArrayList<ListItem> mList = new ArrayList<ListItem>();
-        Resources res = this.getResources();
-        ListItem item = new ListItem();
-        item.setImage(res.getDrawable(R.drawable.fr_lm));
-        item.setTitle("设备名称");
-        item.setTitle1("xiao");
-        mList.add(item);
 
-        item = new ListItem();
-        item.setImage(res.getDrawable(R.drawable.fr_mg));
-        item.setTitle("设备型号");
-        mList.add(item);
-
-        item = new ListItem();
-        item.setImage(res.getDrawable(R.drawable.fr_xj));
-        item.setTitle("品牌");
-        mList.add(item);
-
-        item = new ListItem();
-        item.setImage(res.getDrawable(R.drawable.fr_xg));
-        item.setTitle("Android ID");
-        mList.add(item);
-
-        item = new ListItem();
-        item.setImage(res.getDrawable(R.drawable.fr_tz));
-        item.setTitle("设备指纹");
-        mList.add(item);
-        return mList;
-    }
-
-    private ArrayList<ListItem>  setListDataTwo(){
-
-        ArrayList<ListItem> mList = new ArrayList<ListItem>();
-        Resources res = this.getResources();
-        ListItem item = new ListItem();
-        item.setImage(res.getDrawable(R.drawable.fr_bl));
-        item.setTitle("SDK");
-        mList.add(item);
-
-        item = new ListItem();
-        item.setImage(res.getDrawable(R.drawable.fr_cz));
-        item.setTitle("版本号");
-        mList.add(item);
-        return mList;
-    }
 }

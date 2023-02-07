@@ -29,6 +29,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
+import com.alibaba.fastjson.JSON;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.mobiles.devices.R;
 import com.mobiles.devices.core.BaseFragment;
@@ -48,6 +49,9 @@ import com.xuexiang.xui.utils.WidgetUtils;
 import com.xuexiang.xutil.XUtil;
 import com.xuexiang.xutil.common.ClickUtils;
 import com.xuexiang.xutil.common.CollectionUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 程序主页面,只是一个简单的Tab例子
@@ -168,9 +172,45 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements V
     public boolean onMenuItemClick(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_privacy) {
-            GuideTipsDialog.showTipsForce(this);
+            String bb ="{\"ua\":\"Mozilla/5.0 (Linux; Android 10; Reno) AppleWebKit/ 537.36 (KHTML, like Gecko) Chrome/90.0.4430.91 Mobile Safari/537.36\",\"javaUa\":\"Dalvik/2.1.0 (Linux; U; Android 10; Reno Build/CFMG.202143.065)\",\"imei\":\"860005483227623\",\"imsi\":\"860005485645681\",\"mac\":\"B1:DE:6B:8F:89:05\",\"bssid\":\"37:DB:63:D2:B4:A8\",\"ssid\":\"W35LlyN\",\"phone\":\"+819066031821\",\"phoneStatus\":\"1\",\"phoneType\":1,\"width\":\"720\",\"height\":\"1560\",\"densityDpi\":340,\"xdpi\":\"343.628\",\"ydpi\":\"343.628\",\"carrier\":\"NTT\",\"mcc\":\"440\",\"mnc\":\"10\",\"carrierCode\":\"44010\",\"countryCode\":\"JP\",\"latitude\":\"33.488185\",\"longitude\":\"134.396803\",\"simSerial\":\"89810495833779614901\",\"simStatus\":\"5\",\"androidId\":\"cf9715e520d96c2b\",\"androidSerial\":\"9187E2181E952E\",\"ip\":\"\",\"diskSize\":\"13648998\",\"networkType\":\"0\",\"networkTypeName\":\"MOBILE\",\"networkSubType\":13,\"networkSubTypeName\":\"LTE\",\"blueTooth\":\"94:56:F5:A6:53:56\",\"email\":\"OS3tf@gmail.com\",\"Sensors\":{\"ACCELEROMETER\":{\"NAME\":\"AK09918-pseudo-gyro\",\"VENDOR\":\"MTK\"},\"GYROSCOPE\":{\"NAME\":\"lsm6dsm\",\"VENDOR\":\"lsm6dsm_acc\"}},\"buildInfo\":{\"board\":\"coral\",\"bootloader\":\"c2f2-0.4-8048765\",\"brand\":\"google\",\"cpu_abi\":\"arm64-v8a\",\"cpu_abi2\":\"arm64-v8a\",\"cpu_abilist\":\"arm64-v8a,armeabi-v7a,armeabi\",\"device\":\"coral\",\"display\":\"TD1A.221105.001\",\"radioVersion\":\"YXMS0-00060-2014770638\",\"increment\":\"1673581186\",\"fingerPrint\":\"Oppo/PCAM00/PCAM00:10/74ELYT-660.6153.24/1899793:user/release-keys\",\"hardWare\":\"coral\",\"host\":\"cxf-System\",\"id\":\"TD1A.221105.001\",\"manufacture\":\"Google\",\"serial\":\"9187E2181E952E\",\"product\":\"coral\",\"tags\":\"release-keys\",\"time\":1595651339149,\"type\":\"user\",\"user\":\"cxf\",\"sdk\":\"33\",\"sdkInit\":\"33\",\"model\":\"Pixel 4 XL\",\"osName\":\"13\",\"osArch\":\"armv7l\",\"osVersion\":\"13\",\"androidVersion\":\"13\",\"SECURITY_PATCH\":\"2022-11-05\"}}";
+            try {
+                Map<String,String> map_new=new HashMap<>();
+                Map mapsRe = (Map) JSON.parse(bb);
+                for (Object map_re : mapsRe.entrySet()){
+
+                    Log.i("map_re集合",((Map.Entry)map_re).getKey()+"     " + ((Map.Entry)map_re).getValue());
+
+                    for (Object map__tj : EnvironmentalTestingFragment.map_tj.entrySet()){
+
+                        Log.i("map__tj集合",((Map.Entry)map__tj).getKey()+"     " + ((Map.Entry)map__tj).getValue());
+
+                        if( ((Map.Entry)map_re).getKey().toString().equals(((Map.Entry)map__tj).getKey()) ){
+                            map_new.put(((Map.Entry)map__tj).getValue().toString(),((Map.Entry)map_re).getValue().toString());
+                            Log.i("map_new集合",((Map.Entry)map__tj).getValue().toString()+"     " + ((Map.Entry)map_re).getValue().toString());
+                            try {
+                                ServiceUtils.getiMikRom().shellExec("injectprop " + ((Map.Entry)map__tj).getValue().toString()+" " + ((Map.Entry)map_re).getValue().toString());
+                            } catch (RemoteException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                    }
+                }
+
+                ServiceUtils.getiMikRom().writeFile("/data/system/IDevice_conf",bb);
+                ServiceUtils.getiMikRom().shellExec("setprop ctl.restart zygote_secondary");
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+            // GuideTipsDialog.showTipsForce(this);
         } else if (id == R.id.action_about) {
-            openNewPage(AboutFragment.class);
+
+            try {
+                ServiceUtils.getiMikRom().shellExec("pm clear  com.ytheekshana.deviceinfo");
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+            //openNewPage(AboutFragment.class);
         }
         return false;
     }

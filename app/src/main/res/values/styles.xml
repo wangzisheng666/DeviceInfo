@@ -53,4 +53,14 @@
         <item name="android:backgroundDimEnabled">true</item>
     </style>
 
+
+        <style name="customTheme">
+            <item name="dropDownListViewStyle">@style/customSpinnerStyle</item>
+        </style>
+        <style name="customSpinnerStyle" parent="android:Widget.ListView.DropDown">
+            <item name="android:textAlignment">center</item>
+            <item name="divider">@color/colorPrimaryDark</item>
+            <item name="android:dividerHeight">2dp</item>
+        </style>
+
 </resources>

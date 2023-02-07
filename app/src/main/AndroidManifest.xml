@@ -5,7 +5,9 @@
 
     <!--进程杀死-->
     <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
-
+    <uses-permission
+        android:name="android.permission.QUERY_ALL_PACKAGES"
+        tools:ignore="QueryAllPackagesPermission" />
     <application
         android:name="com.mobiles.devices.MyApp"
         android:allowBackup="false"

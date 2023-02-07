@@ -25,86 +25,59 @@
 
 
 
-    <ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:scrollbars="vertical"
-        android:background="#e3e2e7"
-        android:fadingEdge="vertical">
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="#e3e2e7"
-            >
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout style="@style/PullDownStyle">
 
-
-            <com.mobiles.devices.fragment.settings.CornerListView
-                android:id="@+id/setting_list"
-                android:layout_width="fill_parent"
-                android:layout_height="195dp"
-                android:layout_margin="10dip"
-                android:background="@drawable/shape_bg_listview"
-                android:dividerHeight="1px"
-                android:divider="#cccccc"
-                android:scrollbars="none"
-                android:cacheColorHint="#00000000" />
-
-            <com.mobiles.devices.fragment.settings.CornerListView
-                android:id="@+id/setting_list2"
-                android:layout_width="fill_parent"
-                android:layout_height="78dp"
-                android:layout_marginTop="30dp"
-                android:layout_margin="10dip"
-                android:background="@drawable/shape_bg_listview"
-                android:dividerHeight="1px"
-                android:divider="#cccccc"
-                android:scrollbars="none"
-                android:cacheColorHint="#00000000" />
+        <androidx.core.widget.NestedScrollView style="@style/ScrollViewStyle">
 
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:gravity="center"
-                >
-                <com.xuexiang.xui.widget.shadow.ShadowTextView
-                    android:id="@+id/page1_button_bianji"
-                    android:layout_width="200dp"
-                    android:layout_height="60dp"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center"
-                    android:paddingEnd="5dp"
-                    android:paddingBottom="5dp"
-                    android:text="变机"
-                    android:textColor="@color/xui_config_color_white"
-                    app:sd_bgColor="?attr/colorAccent"
-                    app:sd_offsetX="5dp"
-                    app:sd_offsetY="5dp"
-                    app:sd_shadowRadius="5dp"
-                    app:sd_shapeRadius="5dp" />
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/page1_button_text"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="460dp"
-                    android:scrollbars="vertical"
-                    android:singleLine="false"
-                    android:text="content"
-                    android:padding="10dp"
-                    android:fadeScrollbars="false"
-                    android:scrollbarThumbVertical="@drawable/text_scroll"
-                    android:textSize="14sp" />
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/TextStyle.Explain"
+                        android:text="选择清除缓存的应用 " />
+
+                    <TextView
+                        android:id="@+id/app"
+                        style="@style/TextStyle.Explain"
+                        android:layout_weight="1"
+                        android:text="APP" />
+
+                    <ImageButton
+                        android:id="@+id/shan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:popupBackground="@drawable/shape_for_custom_spinner"
+                        android:background="@drawable/selector_for_custom_spinner"
+                        android:src="@drawable/ic_shan"/>
+
+                </LinearLayout>
 
 
 
-
+                <Spinner
+                    android:id="@+id/spinner_system_fit_offset"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/ms_item_height_size"
+                    android:layout_marginTop="?attr/xui_config_content_spacing_vertical"
+                    android:popupBackground="@drawable/shape_for_custom_spinner"
+                    android:background="@drawable/selector_for_custom_spinner"
+                    android:spinnerMode="dropdown" />
 
             </LinearLayout>
-        </LinearLayout>
 
 
-    </ScrollView>
+        </androidx.core.widget.NestedScrollView>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 </LinearLayout>
