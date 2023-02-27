@@ -10,7 +10,7 @@ android {
     buildToolsVersion build_versions.build_tools
 
     defaultConfig {
-        applicationId "com.mobiles.devices"
+        applicationId "com.jia.devices"
         minSdkVersion build_versions.target_sdk
         targetSdkVersion build_versions.target_sdk
         versionCode 1

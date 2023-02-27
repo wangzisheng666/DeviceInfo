@@ -35,7 +35,7 @@
             >
 
 
-            <com.mobiles.devices.fragment.settings.CornerListView
+            <com.jia.devices.fragment.settings.CornerListView
                 android:id="@+id/setting_list"
                 android:layout_width="fill_parent"
                 android:layout_height="195dp"
@@ -46,7 +46,7 @@
                 android:scrollbars="none"
                 android:cacheColorHint="#00000000" />
 
-            <com.mobiles.devices.fragment.settings.CornerListView
+            <com.jia.devices.fragment.settings.CornerListView
                 android:id="@+id/setting_list2"
                 android:layout_width="fill_parent"
                 android:layout_height="78dp"

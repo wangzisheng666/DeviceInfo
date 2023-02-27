@@ -1,6 +1,6 @@
 package com.xuexiang.devices;
 
-import com.mobiles.devices.core.http.entity.TipInfo;
+import com.jia.devices.core.http.entity.TipInfo;
 import com.xuexiang.xhttp2.model.ApiResult;
 import com.xuexiang.xutil.net.JsonUtil;
 

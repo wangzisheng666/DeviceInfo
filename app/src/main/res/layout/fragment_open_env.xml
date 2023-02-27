@@ -48,7 +48,10 @@
                         android:text="选择清除缓存的应用 " />
 
                     <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:id="@+id/app"
+                        android:singleLine="false"
                         style="@style/TextStyle.Explain"
                         android:layout_weight="1"
                         android:text="APP" />

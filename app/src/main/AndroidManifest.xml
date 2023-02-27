@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.mobiles.devices">
+    package="com.jia.devices">
 
     <!--进程杀死-->
     <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
@@ -9,7 +9,7 @@
         android:name="android.permission.QUERY_ALL_PACKAGES"
         tools:ignore="QueryAllPackagesPermission" />
     <application
-        android:name="com.mobiles.devices.MyApp"
+        android:name="com.jia.devices.MyApp"
         android:allowBackup="false"
         android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
         android:icon="@mipmap/ic_launcher"
@@ -23,8 +23,11 @@
         tools:ignore="LockedOrientationActivity"
         tools:replace="android:allowBackup">
 
+
+
+
         <activity
-            android:name="com.mobiles.devices.activity.SplashActivity"
+            android:name="com.jia.devices.activity.SplashActivity"
             android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Launch.App"
@@ -36,14 +39,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.mobiles.devices.activity.MainActivity"
+            android:name="com.jia.devices.activity.MainActivity"
             android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
 
         <!--通用浏览器-->
         <activity
-            android:name="com.mobiles.devices.core.webview.AgentWebActivity"
+            android:name="com.jia.devices.core.webview.AgentWebActivity"
             android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
             android:hardwareAccelerated="true"
             android:label="@string/app_browser_name"
@@ -93,23 +96,23 @@
 
         <!--fragment的页面容器-->
         <activity
-            android:name="com.mobiles.devices.core.BaseActivity"
+            android:name="com.jia.devices.core.BaseActivity"
             android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <!-- 版本更新提示-->
         <activity
-            android:name="com.mobiles.devices.utils.update.UpdateTipDialog"
+            android:name="com.jia.devices.utils.update.UpdateTipDialog"
             android:screenOrientation="portrait"
             android:theme="@style/DialogTheme" />
         <!-- Webview拦截提示弹窗-->
         <activity
-            android:name="com.mobiles.devices.core.webview.WebViewInterceptDialog"
+            android:name="com.jia.devices.core.webview.WebViewInterceptDialog"
             android:screenOrientation="portrait"
             android:theme="@style/DialogTheme" />
         <!-- applink的中转页面 -->
         <activity
-            android:name="com.mobiles.devices.core.XPageTransferActivity"
+            android:name="com.jia.devices.core.XPageTransferActivity"
             android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
